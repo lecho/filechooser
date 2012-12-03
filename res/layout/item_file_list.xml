@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_dark"
     android:paddingLeft="5dp"
     android:paddingRight="5dp" >
 
@@ -15,14 +14,14 @@
 
     <TextView
         android:id="@+id/name"
-        style="@android:style/TextAppearance.Medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/icon"
         android:layout_alignTop="@id/icon"
         android:layout_toRightOf="@id/icon"
         android:gravity="center_vertical"
-        android:text="temp text"
-        android:textColor="@android:color/darker_gray" />
+        android:text="file.pdf"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>
