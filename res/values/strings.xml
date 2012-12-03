@@ -4,5 +4,7 @@
     <string name="app_name">filechooser</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
+    <string name="back_button_description">Step back</string>
+    <string name="file_icon_description">Item icon</string>
 
 </resources>
