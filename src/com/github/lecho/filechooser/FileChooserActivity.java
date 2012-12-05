@@ -1,7 +1,10 @@
 package com.github.lecho.filechooser;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import android.app.Activity;
@@ -19,6 +22,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 /**
  * 
@@ -36,6 +40,7 @@ public class FileChooserActivity extends Activity {
 	private TextView mPathText;
 	private ImageButton mBackBtn;
 	private ImageButton mHomeBtn;
+	private ViewSwitcher mViewSwitcher;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,7 @@ public class FileChooserActivity extends Activity {
 			mBackBtn.setEnabled(false);
 			mHomeBtn.setEnabled(false);
 		}
+		mViewSwitcher = (ViewSwitcher) findViewById(R.id.view_switcher);
 
 		mPathText = (TextView) findViewById(R.id.path);
 		ListView list = (ListView) findViewById(R.id.list);
@@ -101,6 +107,7 @@ public class FileChooserActivity extends Activity {
 	}
 
 	private void loadCurrentPath() {
+		mViewSwitcher.showNext();
 		new PathLoader(mLoaderListener).execute(mPath);
 	}
 
@@ -131,6 +138,7 @@ public class FileChooserActivity extends Activity {
 				mBackBtn.setEnabled(true);
 				mHomeBtn.setEnabled(true);
 			}
+			mViewSwitcher.showPrevious();
 
 		}
 
@@ -210,9 +218,18 @@ public class FileChooserActivity extends Activity {
 			}
 
 			File dir = new File(params[0]);
-			File[] files = dir.listFiles();
+			File[] dirs = dir.listFiles(sSystemDirsFilter);
+			if (null != dirs) {
+				Arrays.sort(dirs, sPathnameComparator);
+				for (File file : dirs) {
+					result.add(file);
+				}
+			}
+
+			File[] files = dir.listFiles(sSystemFilesFilter);
 			if (null != files) {
-				for (File file : dir.listFiles()) {
+				Arrays.sort(files, sPathnameComparator);
+				for (File file : files) {
 					result.add(file);
 				}
 			}
@@ -227,5 +244,34 @@ public class FileChooserActivity extends Activity {
 		}
 
 	}
+
+	private static final FileFilter sSystemDirsFilter = new FileFilter() {
+
+		@Override
+		public boolean accept(File pathname) {
+
+			return pathname.isDirectory() && !pathname.getName().startsWith(".");
+		}
+
+	};
+
+	private static final FileFilter sSystemFilesFilter = new FileFilter() {
+
+		@Override
+		public boolean accept(File pathname) {
+
+			return pathname.isFile() && !pathname.getName().startsWith(".");
+		}
+
+	};
+
+	private static final Comparator<File> sPathnameComparator = new Comparator<File>() {
+
+		@Override
+		public int compare(File lhs, File rhs) {
+			return lhs.getName().toLowerCase().compareTo(rhs.getName().toLowerCase());
+		}
+
+	};
 
 }

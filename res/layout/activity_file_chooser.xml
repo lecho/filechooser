@@ -8,17 +8,17 @@
 		android:id="@+id/path"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:ellipsize="marquee"
+		android:focusable="true"
+		android:focusableInTouchMode="true"
 		android:gravity="center_vertical"
+		android:marqueeRepeatLimit="marquee_forever"
+		android:maxLines="1"
 		android:padding="5dp"
 		android:paddingBottom="2dp"
 		android:paddingTop="2dp"
-		android:maxLines="1"
-		android:ellipsize="marquee"
-		android:marqueeRepeatLimit="marquee_forever"
-		android:textSize="20sp"
-		android:focusable="true"
-		android:focusableInTouchMode="true"
 		android:scrollHorizontally="true"
+		android:textSize="20sp"
 		android:textStyle="normal" />
 
 	<View
@@ -28,25 +28,39 @@
 		android:layout_below="@id/path"
 		android:background="@android:color/darker_gray" />
 
-	<ListView
-		android:id="@+id/list"
+	<ViewSwitcher
+		android:id="@+id/view_switcher"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:layout_above="@+id/footer"
 		android:layout_below="@id/divider" >
-	</ListView>
+
+		<ListView
+			android:id="@+id/list"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent" >
+		</ListView>
+
+		<ProgressBar
+			android:id="@+id/progress_bar"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center" />
+	</ViewSwitcher>
 
 	<RelativeLayout
 		android:id="@+id/footer"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
-		android:gravity="center" >
+		android:gravity="center"
+		android:paddingTop="5dp" >
 
 		<ImageButton
 			android:id="@+id/back_button"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
+			android:layout_centerHorizontal="true"
 			android:contentDescription="@string/back_button_description"
 			android:src="@drawable/ic_back" />
 
