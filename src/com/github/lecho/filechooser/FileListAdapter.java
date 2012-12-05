@@ -35,9 +35,9 @@ public class FileListAdapter extends BaseAdapter {
 
 		File file = mObjects.get(position);
 		if (file.isFile()) {
-			icon.setImageResource(R.drawable.ic_menu_file);
+			icon.setImageResource(R.drawable.ic_file);
 		} else {
-			icon.setImageResource(R.drawable.ic_menu_folder);
+			icon.setImageResource(R.drawable.ic_folder);
 		}
 
 		name.setText(file.getName());

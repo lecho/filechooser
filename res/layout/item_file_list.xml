@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/file_icon_description"
-        android:src="@drawable/ic_menu_file" />
+        android:src="@drawable/ic_file" />
 
     <TextView
         android:id="@+id/name"
@@ -19,8 +19,9 @@
         android:layout_alignBottom="@id/icon"
         android:layout_alignTop="@id/icon"
         android:layout_toRightOf="@id/icon"
+        android:maxLines="1"
+        android:ellipsize="marquee"
         android:gravity="center_vertical"
-        android:text="file.pdf"
         android:textSize="20sp"
         android:textStyle="bold" />
 

@@ -1,57 +1,62 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity" >
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context=".MainActivity" >
 
-    <TextView
-        android:id="@+id/path"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingBottom="2dp"
-        android:paddingTop="2dp"
-        android:singleLine="true"
-        android:text="/mnt/sdcard/files"
-        android:textSize="20sp"
-        android:textStyle="normal" />
+	<TextView
+		android:id="@+id/path"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:gravity="center_vertical"
+		android:padding="5dp"
+		android:paddingBottom="2dp"
+		android:paddingTop="2dp"
+		android:maxLines="1"
+		android:ellipsize="marquee"
+		android:marqueeRepeatLimit="marquee_forever"
+		android:textSize="20sp"
+		android:focusable="true"
+		android:focusableInTouchMode="true"
+		android:scrollHorizontally="true"
+		android:textStyle="normal" />
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_below="@id/path"
-        android:background="@android:color/darker_gray" />
+	<View
+		android:id="@+id/divider"
+		android:layout_width="match_parent"
+		android:layout_height="2dp"
+		android:layout_below="@id/path"
+		android:background="@android:color/darker_gray" />
 
-    <ListView
-        android:id="@+id/list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/footer"
-        android:layout_below="@id/divider" >
-    </ListView>
+	<ListView
+		android:id="@+id/list"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_above="@+id/footer"
+		android:layout_below="@id/divider" >
+	</ListView>
 
-    <RelativeLayout
-        android:id="@+id/footer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center" >
+	<RelativeLayout
+		android:id="@+id/footer"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:gravity="center" >
 
-        <ImageButton
-            android:id="@+id/back_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/back_button_description"
-            android:src="@drawable/ic_menu_back" />
+		<ImageButton
+			android:id="@+id/back_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:contentDescription="@string/back_button_description"
+			android:src="@drawable/ic_back" />
 
-        <ImageButton
-            android:id="@+id/home_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/back_button"
-            android:contentDescription="@string/back_button_description"
-            android:src="@drawable/ic_menu_home" />
-    </RelativeLayout>
+		<ImageButton
+			android:id="@+id/home_button"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_toRightOf="@id/back_button"
+			android:contentDescription="@string/back_button_description"
+			android:src="@drawable/ic_home" />
+	</RelativeLayout>
 
 </RelativeLayout>
