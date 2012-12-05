@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2012 Leszek Wach
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.github.lecho.filechooser;
 
 import java.io.File;
@@ -7,6 +23,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -25,6 +42,10 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 /**
+ * Intent intent = new Intent(context, FileChooserActivity.class);
+ * startActivityForResult(intent, someRequestCode);
+ * 
+ * Uri fileUri = result.getData;
  * 
  * @author lecho
  * 
@@ -46,14 +67,12 @@ public class FileChooserActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_file_chooser);
-
+		setContentView(R.layout.filechooser_activity_file_chooser);
 		mPath = HOME;
-
 		if (null != getIntent().getExtras()) {
 			String path = getIntent().getExtras().getString(START_PATH);
 
-			if (!TextUtils.isEmpty(path)) {
+			if (!TextUtils.isEmpty(path) && path.length() >= HOME.length()) {
 				mPath = path;
 			}
 		}
@@ -267,6 +286,7 @@ public class FileChooserActivity extends Activity {
 
 	private static final Comparator<File> sPathnameComparator = new Comparator<File>() {
 
+		@SuppressLint("DefaultLocale")
 		@Override
 		public int compare(File lhs, File rhs) {
 			return lhs.getName().toLowerCase().compareTo(rhs.getName().toLowerCase());
