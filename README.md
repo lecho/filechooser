@@ -3,6 +3,8 @@
 
 File chooser library for android, api 8+.
 
+![screenshot1](https://raw.github.com/lecho/filechooser/master/screen_1.png)
+
 ## Usage:
     private static final int REQUEST_CODE = 1;
 
