@@ -62,7 +62,7 @@
 		android:maxLines="1"
 		android:padding="5dp"
 		android:singleLine="true"
-		android:textSize="20sp"
+		android:textSize="16sp"
 		android:textColor="@android:color/secondary_text_dark"
 		android:textStyle="normal" />
 
