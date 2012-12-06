@@ -8,7 +8,6 @@ Uses single activity without FileObserver and does not require android support l
 ## Usage
     private static final int REQUEST_CODE = 1;
 
-    @Override
     public void foo() {
         Intent intent = new Intent(context, FileChooserActivity.class);
         startActivityForResult(intent, REQUEST_CODE);
