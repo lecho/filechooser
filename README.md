@@ -1,11 +1,11 @@
 #Filechooser
-===========
 
-File chooser library for android, api 8+.
+Simple file chooser android library, works for api 8+. 
+Uses single activity without FileObserver and does not require android support library.
 
 ![screenshot1](https://raw.github.com/lecho/filechooser/master/screen_1.png)
 
-## Usage:
+## Usage
     private static final int REQUEST_CODE = 1;
 
     @Override
