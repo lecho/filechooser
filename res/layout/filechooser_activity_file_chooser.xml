@@ -19,55 +19,14 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context=".MainActivity" >
-
-	<TextView
-		android:id="@+id/path"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:ellipsize="marquee"
-		android:focusable="true"
-		android:focusableInTouchMode="true"
-		android:gravity="center_vertical"
-		android:marqueeRepeatLimit="marquee_forever"
-		android:maxLines="1"
-		android:padding="5dp"
-		android:scrollHorizontally="true"
-		android:textSize="20sp"
-		android:textStyle="normal" />
-
-	<View
-		android:id="@+id/divider"
-		android:layout_width="match_parent"
-		android:layout_height="2dp"
-		android:layout_below="@id/path"
-		android:background="@android:color/darker_gray" />
-
-	<ViewSwitcher
-		android:id="@+id/view_switcher"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:layout_above="@+id/footer"
-		android:layout_below="@id/divider" >
-
-		<ListView
-			android:id="@+id/list"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent" >
-		</ListView>
-
-		<ProgressBar
-			android:id="@+id/progress_bar"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center" />
-	</ViewSwitcher>
+	tools:context=".MainActivity" 
+	android:background="@android:color/background_dark">
 
 	<RelativeLayout
-		android:id="@+id/footer"
+		android:id="@+id/buttons"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
+		android:layout_alignParentTop="true"
 		android:gravity="center"
 		android:paddingTop="5dp" >
 
@@ -87,5 +46,51 @@
 			android:contentDescription="@string/back_button_description"
 			android:src="@drawable/filechooser_ic_home" />
 	</RelativeLayout>
+	<View
+		android:id="@+id/hl1"
+		android:layout_width="match_parent"
+		android:layout_below="@id/buttons"
+		android:layout_height="2dp"
+		android:background="@android:color/darker_gray" />
+
+	<TextView
+		android:id="@+id/path"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/hl1"
+		android:gravity="center_vertical"
+		android:maxLines="1"
+		android:padding="5dp"
+		android:singleLine="true"
+		android:textSize="20sp"
+		android:textColor="@android:color/secondary_text_dark"
+		android:textStyle="normal" />
+
+	<View
+		android:id="@+id/hl2"
+		android:layout_width="match_parent"
+		android:layout_height="2dp"
+		android:layout_below="@id/path"
+		android:background="@android:color/darker_gray" />
+
+	<ViewSwitcher
+		android:id="@+id/view_switcher"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_below="@id/hl2" >
+
+		<ListView
+			android:id="@+id/list"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent" 
+			android:cacheColorHint="@android:color/background_dark">
+		</ListView>
+
+		<ProgressBar
+			android:id="@+id/progress_bar"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center" />
+	</ViewSwitcher>
 
 </RelativeLayout>

@@ -25,8 +25,7 @@
 		android:id="@+id/icon"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:contentDescription="@string/file_icon_description"
-		android:src="@drawable/filechooser_ic_file" />
+		android:contentDescription="@string/file_icon_description" />
 
 	<TextView
 		android:id="@+id/name"
@@ -35,9 +34,10 @@
 		android:layout_alignBottom="@id/icon"
 		android:layout_alignTop="@id/icon"
 		android:layout_toRightOf="@id/icon"
-		android:ellipsize="marquee"
 		android:gravity="center_vertical"
 		android:maxLines="1"
+		android:singleLine="true"
+		android:textColor="@android:color/primary_text_dark"
 		android:textSize="20sp"
 		android:textStyle="bold" />
 
