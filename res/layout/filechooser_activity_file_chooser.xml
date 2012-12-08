@@ -19,8 +19,8 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context=".MainActivity" 
-	android:background="@android:color/background_dark">
+	android:background="@android:color/background_dark"
+	tools:context=".MainActivity" >
 
 	<RelativeLayout
 		android:id="@+id/buttons"
@@ -46,11 +46,12 @@
 			android:contentDescription="@string/back_button_description"
 			android:src="@drawable/filechooser_ic_home" />
 	</RelativeLayout>
+
 	<View
 		android:id="@+id/hl1"
 		android:layout_width="match_parent"
-		android:layout_below="@id/buttons"
 		android:layout_height="2dp"
+		android:layout_below="@id/buttons"
 		android:background="@android:color/darker_gray" />
 
 	<TextView
@@ -62,8 +63,8 @@
 		android:maxLines="1"
 		android:padding="5dp"
 		android:singleLine="true"
-		android:textSize="16sp"
 		android:textColor="@android:color/secondary_text_dark"
+		android:textSize="16sp"
 		android:textStyle="normal" />
 
 	<View
@@ -82,8 +83,9 @@
 		<ListView
 			android:id="@+id/list"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent" 
-			android:cacheColorHint="@android:color/background_dark">
+			android:layout_height="match_parent"
+			android:cacheColorHint="@android:color/background_dark"
+			android:divider="@android:drawable/divider_horizontal_dark">
 		</ListView>
 
 		<ProgressBar
