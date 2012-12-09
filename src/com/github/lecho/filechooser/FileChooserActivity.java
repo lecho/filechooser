@@ -44,8 +44,15 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 /**
+ * Usage:
+ * 
+ * Starting activity:
+ * 
  * Intent intent = new Intent(context, FileChooserActivity.class);
  * startActivityForResult(intent, someRequestCode);
+ * 
+ * 
+ * Retrieving path in onActivityResult:
  * 
  * Uri fileUri = result.getData;
  * 
@@ -130,9 +137,8 @@ public class FileChooserActivity extends Activity {
 		super.onSaveInstanceState(outState);
 	}
 
-	/**
-	 * 
-	 * @return false if user returned to home directory, true otherwise.
+	/*
+	 * Returns false if user returned to home directory, true otherwise.
 	 */
 	private boolean back() {
 
@@ -151,16 +157,30 @@ public class FileChooserActivity extends Activity {
 		loadCurrentPath();
 	}
 
+	/*
+	 * Loads files under current path. TODO if you want to add FileObserver,
+	 * onEvent method should call this method.
+	 */
 	private void loadCurrentPath() {
 		new PathLoader(mLoaderListener).execute(mPath);
 	}
 
+	/*
+	 * 
+	 */
 	private interface OnPathLoadedListener {
 		public void onLoading();
 
 		public void onPathLoaded(List<File> files);
 	}
 
+	/**
+	 * Called when files under current path are fully loaded, hides progress bar
+	 * and shows list view.
+	 * 
+	 * @author lecho
+	 * 
+	 */
 	private class LoaderListener implements OnPathLoadedListener {
 		@Override
 		public void onLoading() {
@@ -185,6 +205,12 @@ public class FileChooserActivity extends Activity {
 
 	}
 
+	/**
+	 * Called when list item is selected.
+	 * 
+	 * @author lecho
+	 * 
+	 */
 	private class SelectionListener implements OnItemClickListener {
 
 		@Override
@@ -194,6 +220,7 @@ public class FileChooserActivity extends Activity {
 			if (file.isDirectory()) {
 				loadCurrentPath();
 			} else {
+				// if selected item is file then return path
 				Intent data = new Intent();
 				data.setData(Uri.parse(mPath));
 				setResult(Activity.RESULT_OK, data);
@@ -202,6 +229,12 @@ public class FileChooserActivity extends Activity {
 		}
 	}
 
+	/**
+	 * Called when user click up button.
+	 * 
+	 * @author lecho
+	 * 
+	 */
 	private class BackListener implements View.OnClickListener {
 
 		@Override
@@ -212,6 +245,12 @@ public class FileChooserActivity extends Activity {
 
 	}
 
+	/**
+	 * Called when user click home button.
+	 * 
+	 * @author lecho
+	 * 
+	 */
 	private class HomeListener implements View.OnClickListener {
 
 		@Override
@@ -222,6 +261,12 @@ public class FileChooserActivity extends Activity {
 
 	}
 
+	/**
+	 * Loads files list under current path.
+	 * 
+	 * @author lecho
+	 * 
+	 */
 	private static class PathLoader extends AsyncTask<String, Void, List<File>> {
 
 		private OnPathLoadedListener mListener;
@@ -272,6 +317,9 @@ public class FileChooserActivity extends Activity {
 
 	}
 
+	/**
+	 * Filter for non system specific files.
+	 */
 	private static final FileFilter sSystemDirsFilter = new FileFilter() {
 
 		@Override
@@ -282,6 +330,9 @@ public class FileChooserActivity extends Activity {
 
 	};
 
+	/**
+	 * Filter for non system specific directories.
+	 */
 	private static final FileFilter sSystemFilesFilter = new FileFilter() {
 
 		@Override
@@ -292,6 +343,9 @@ public class FileChooserActivity extends Activity {
 
 	};
 
+	/**
+	 * Compare two files in terms of path alphabetical order.
+	 */
 	private static final Comparator<File> sPathnameComparator = new Comparator<File>() {
 
 		@SuppressLint("DefaultLocale")
