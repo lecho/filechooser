@@ -71,6 +71,7 @@ public class FileChooserActivity extends Activity {
 	private TextView mPathText;
 	private ImageButton mBackBtn;
 	private ImageButton mHomeBtn;
+	private ImageButton mCloseBtn;
 	private ViewSwitcher mViewSwitcher;
 
 	@Override
@@ -93,6 +94,8 @@ public class FileChooserActivity extends Activity {
 			}
 		}
 
+		mCloseBtn = (ImageButton) findViewById(R.id.close_button);
+		mCloseBtn.setOnClickListener(new CloseListener());
 		mBackBtn = (ImageButton) findViewById(R.id.back_button);
 		mBackBtn.setOnClickListener(new BackListener());
 		mHomeBtn = (ImageButton) findViewById(R.id.home_button);
@@ -256,6 +259,23 @@ public class FileChooserActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			home();
+
+		}
+
+	}
+
+	/**
+	 * Called when user click close button.
+	 * 
+	 * @author lecho
+	 * 
+	 */
+	private class CloseListener implements View.OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			setResult(Activity.RESULT_CANCELED);
+			finish();
 
 		}
 

@@ -1,65 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-* Copyright (C) 2012 Leszek Wach
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
+     * Copyright (C) 2012 Leszek Wach * * Licensed under the Apache License, 
+	Version 2.0 (the "License"); * you may not use this file except in compliance 
+	with the License. * You may obtain a copy of the License at * * http://www.apache.org/licenses/LICENSE-2.0 
+	* * Unless required by applicable law or agreed to in writing, software * 
+	distributed under the License is distributed on an "AS IS" BASIS, * WITHOUT 
+	WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. * See the 
+	License for the specific language governing permissions and * limitations 
+	under the License.
 -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
 	android:background="@android:color/background_dark"
+	android:layout_height="match_parent"
+	android:layout_width="match_parent"
 	tools:context=".MainActivity" >
 
 	<RelativeLayout
-		android:id="@+id/buttons"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_alignParentTop="true"
 		android:gravity="center"
+		android:id="@+id/buttons"
+		android:layout_alignParentTop="true"
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
 		android:paddingTop="5dp" >
 
 		<ImageButton
-			android:id="@+id/back_button"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_centerHorizontal="true"
 			android:contentDescription="@string/back_button_description"
+			android:id="@+id/back_button"
+			android:layout_centerHorizontal="true"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
 			android:src="@drawable/filechooser_ic_back" />
 
 		<ImageButton
+			android:contentDescription="@string/home_button_description"
 			android:id="@+id/home_button"
-			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_toRightOf="@id/back_button"
-			android:contentDescription="@string/back_button_description"
+			android:layout_width="wrap_content"
 			android:src="@drawable/filechooser_ic_home" />
+
+		<ImageButton
+			android:contentDescription="@string/close_button_description"
+			android:id="@+id/close_button"
+			android:layout_height="wrap_content"
+			android:layout_toRightOf="@id/home_button"
+			android:layout_width="wrap_content"
+			android:src="@drawable/filechooser_ic_close" />
 	</RelativeLayout>
 
 	<View
+		android:background="@android:color/darker_gray"
 		android:id="@+id/hl1"
-		android:layout_width="match_parent"
-		android:layout_height="2dp"
 		android:layout_below="@id/buttons"
-		android:background="@android:color/darker_gray" />
+		android:layout_height="2dp"
+		android:layout_width="match_parent" />
 
 	<TextView
-		android:id="@+id/path"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/hl1"
 		android:gravity="center_vertical"
+		android:id="@+id/path"
+		android:layout_below="@id/hl1"
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
 		android:maxLines="1"
 		android:padding="5dp"
 		android:singleLine="true"
@@ -68,31 +71,31 @@
 		android:textStyle="normal" />
 
 	<View
+		android:background="@android:color/darker_gray"
 		android:id="@+id/hl2"
-		android:layout_width="match_parent"
-		android:layout_height="2dp"
 		android:layout_below="@id/path"
-		android:background="@android:color/darker_gray" />
+		android:layout_height="2dp"
+		android:layout_width="match_parent" />
 
 	<ViewSwitcher
 		android:id="@+id/view_switcher"
-		android:layout_width="match_parent"
+		android:layout_below="@id/hl2"
 		android:layout_height="match_parent"
-		android:layout_below="@id/hl2" >
+		android:layout_width="match_parent" >
 
 		<ListView
-			android:id="@+id/list"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
 			android:cacheColorHint="@android:color/background_dark"
-			android:divider="@android:drawable/divider_horizontal_dark">
+			android:divider="@android:drawable/divider_horizontal_dark"
+			android:id="@+id/list"
+			android:layout_height="match_parent"
+			android:layout_width="match_parent" >
 		</ListView>
 
 		<ProgressBar
 			android:id="@+id/progress_bar"
-			android:layout_width="wrap_content"
+			android:layout_gravity="center"
 			android:layout_height="wrap_content"
-			android:layout_gravity="center" />
+			android:layout_width="wrap_content" />
 	</ViewSwitcher>
 
 </RelativeLayout>
