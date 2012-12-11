@@ -9,60 +9,59 @@
 	License for the specific language governing permissions and * limitations 
 	under the License.
 -->
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
-	android:background="@android:color/background_dark"
-	android:layout_height="match_parent"
 	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@android:color/background_dark"
 	tools:context=".MainActivity" >
 
 	<RelativeLayout
-		android:gravity="center"
 		android:id="@+id/buttons"
-		android:layout_alignParentTop="true"
-		android:layout_height="wrap_content"
 		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		android:gravity="center"
 		android:paddingTop="5dp" >
 
 		<ImageButton
-			android:contentDescription="@string/back_button_description"
 			android:id="@+id/back_button"
-			android:layout_centerHorizontal="true"
-			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerHorizontal="true"
+			android:contentDescription="@string/back_button_description"
 			android:src="@drawable/filechooser_ic_back" />
 
 		<ImageButton
-			android:contentDescription="@string/home_button_description"
 			android:id="@+id/home_button"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_toRightOf="@id/back_button"
-			android:layout_width="wrap_content"
+			android:contentDescription="@string/home_button_description"
 			android:src="@drawable/filechooser_ic_home" />
 
 		<ImageButton
-			android:contentDescription="@string/close_button_description"
 			android:id="@+id/close_button"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_toRightOf="@id/home_button"
-			android:layout_width="wrap_content"
+			android:contentDescription="@string/close_button_description"
 			android:src="@drawable/filechooser_ic_close" />
 	</RelativeLayout>
 
 	<View
-		android:background="@android:color/darker_gray"
 		android:id="@+id/hl1"
-		android:layout_below="@id/buttons"
+		android:layout_width="match_parent"
 		android:layout_height="2dp"
-		android:layout_width="match_parent" />
+		android:layout_below="@id/buttons"
+		android:background="@android:color/darker_gray" />
 
 	<TextView
-		android:gravity="center_vertical"
 		android:id="@+id/path"
-		android:layout_below="@id/hl1"
-		android:layout_height="wrap_content"
 		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/hl1"
+		android:gravity="center_vertical"
 		android:maxLines="1"
 		android:padding="5dp"
 		android:singleLine="true"
@@ -71,31 +70,32 @@
 		android:textStyle="normal" />
 
 	<View
-		android:background="@android:color/darker_gray"
 		android:id="@+id/hl2"
-		android:layout_below="@id/path"
+		android:layout_width="match_parent"
 		android:layout_height="2dp"
-		android:layout_width="match_parent" />
+		android:layout_below="@id/path"
+		android:background="@android:color/darker_gray" />
 
 	<ViewSwitcher
 		android:id="@+id/view_switcher"
-		android:layout_below="@id/hl2"
+		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:layout_width="match_parent" >
+		android:layout_below="@id/hl2" >
 
 		<ListView
-			android:cacheColorHint="@android:color/background_dark"
-			android:divider="@android:drawable/divider_horizontal_dark"
 			android:id="@+id/list"
+			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:layout_width="match_parent" >
+			android:cacheColorHint="@android:color/background_dark"
+			android:divider="@drawable/filechooser_list_divider"
+			android:listSelector="@drawable/filechooser_list_item_selector" >
 		</ListView>
 
 		<ProgressBar
 			android:id="@+id/progress_bar"
-			android:layout_gravity="center"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_width="wrap_content" />
+			android:layout_gravity="center" />
 	</ViewSwitcher>
 
 </RelativeLayout>

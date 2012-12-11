@@ -64,6 +64,8 @@ public class FileChooserActivity extends Activity {
 	public static final String TAG = FileChooserActivity.class.getSimpleName();
 	public static final String START_PATH = "com.github.lechofilechooser:start-path";
 
+	// If you want to access system folders(for example on rooted device) change
+	// HOME constant;
 	private static final String HOME = Environment.getExternalStorageDirectory().getAbsolutePath();
 	private String mPath;
 	private FileListAdapter mAdapter;

@@ -38,9 +38,11 @@ import android.widget.TextView;
  */
 public class FileListAdapter extends BaseAdapter {
 	private static final String LENGTH_UNIT_KB = " KB";
+	private static final String DIR = "<DIR>";
 	private static final BigDecimal LENGTH_DIV = new BigDecimal(1024);
 	private NumberFormat mNumberFormat;
 	private DateFormat mDateFormat;
+	private DateFormat mTimeFormat;
 	private Context mContext;
 	private List<File> mObjects = new ArrayList<File>();
 
@@ -48,6 +50,8 @@ public class FileListAdapter extends BaseAdapter {
 		mContext = context;
 		mNumberFormat = NumberFormat.getInstance();
 		mDateFormat = android.text.format.DateFormat.getDateFormat(mContext);
+		mTimeFormat = android.text.format.DateFormat.getTimeFormat(mContext);
+
 	}
 
 	@Override
@@ -58,7 +62,8 @@ public class FileListAdapter extends BaseAdapter {
 			viewHolder = new ViewHolder();
 			viewHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
 			viewHolder.name = (TextView) convertView.findViewById(R.id.name);
-			viewHolder.details = (TextView) convertView.findViewById(R.id.details);
+			viewHolder.details1 = (TextView) convertView.findViewById(R.id.details1);
+			viewHolder.details2 = (TextView) convertView.findViewById(R.id.details2);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -70,13 +75,17 @@ public class FileListAdapter extends BaseAdapter {
 			BigDecimal length = new BigDecimal(file.length());
 			length = length.divide(LENGTH_DIV, 0, BigDecimal.ROUND_CEILING);
 			String formLength = mNumberFormat.format(length.longValue());
-			viewHolder.details.setText(formLength + LENGTH_UNIT_KB);
+			viewHolder.details1.setText(formLength + LENGTH_UNIT_KB);
 
 		} else {
 			viewHolder.icon.setImageResource(R.drawable.filechooser_ic_folder);
-			String lastModified = mDateFormat.format(new Date(file.lastModified()));
-			viewHolder.details.setText(lastModified);
+			viewHolder.details1.setText(DIR);
 		}
+
+		// last modification date
+		StringBuilder lastModified = new StringBuilder().append(mDateFormat.format(new Date(file.lastModified())))
+				.append(" ").append(mTimeFormat.format(new Date(file.lastModified())));
+		viewHolder.details2.setText(lastModified);
 
 		viewHolder.name.setText(file.getName());
 		return convertView;
@@ -113,7 +122,8 @@ public class FileListAdapter extends BaseAdapter {
 	private static class ViewHolder {
 		public ImageView icon;// R.id.icon
 		public TextView name;// R.id.name
-		public TextView details;// R.id.details
+		public TextView details1;// R.id.details1
+		public TextView details2;// R.id.details2
 
 	}
 }

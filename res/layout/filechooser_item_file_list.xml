@@ -12,22 +12,20 @@
 * distributed under the License is distributed on an "AS IS" BASIS,
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
-* limitations under the License
+* limitations under the License.
 -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:paddingBottom="5dp"
-	android:paddingLeft="5dp"
-	android:paddingRight="5dp"
-	android:paddingTop="5dp" >
+	android:padding="5dp" >
 
 	<ImageView
 		android:id="@+id/icon"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:contentDescription="@string/file_icon_description" />
+		android:contentDescription="@string/file_icon_description"
+		android:src="@drawable/filechooser_ic_folder" />
 
 	<TextView
 		android:id="@+id/name"
@@ -37,20 +35,33 @@
 		android:gravity="center_vertical"
 		android:maxLines="1"
 		android:singleLine="true"
-		android:textColor="@android:color/primary_text_dark"
+		android:textColor="@drawable/filechooser_list_item_text_selector"
 		android:textSize="20sp" />
 
 	<TextView
-		android:id="@+id/details"
+		android:id="@+id/details1"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/name"
+		android:layout_marginLeft="5dp"
+		android:layout_toRightOf="@id/icon"
+		android:gravity="center_vertical"
+		android:maxLines="1"
+		android:singleLine="true"
+		android:textColor="@drawable/filechooser_list_item_text_selector"
+		android:textSize="12sp" />
+
+	<TextView
+		android:id="@+id/details2"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentRight="true"
 		android:layout_below="@id/name"
+		android:layout_marginRight="5dp"
 		android:gravity="center_vertical"
 		android:maxLines="1"
 		android:singleLine="true"
-		android:layout_marginRight="5dp"
-		android:textColor="@android:color/primary_text_dark"
-		android:textSize="14sp" />
+		android:textColor="@drawable/filechooser_list_item_text_selector"
+		android:textSize="12sp" />
 
 </RelativeLayout>
