@@ -86,9 +86,7 @@
 			android:id="@+id/list"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
-			android:cacheColorHint="@android:color/background_dark"
-			android:divider="@drawable/filechooser_list_divider"
-			android:listSelector="@drawable/filechooser_list_item_selector" >
+			android:cacheColorHint="@android:color/background_dark">
 		</ListView>
 
 		<ProgressBar

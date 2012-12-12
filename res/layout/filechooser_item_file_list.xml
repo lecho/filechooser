@@ -35,7 +35,7 @@
 		android:gravity="center_vertical"
 		android:maxLines="1"
 		android:singleLine="true"
-		android:textColor="@drawable/filechooser_list_item_text_selector"
+		android:textColor="@android:color/primary_text_dark"
 		android:textSize="20sp" />
 
 	<TextView
@@ -48,7 +48,7 @@
 		android:gravity="center_vertical"
 		android:maxLines="1"
 		android:singleLine="true"
-		android:textColor="@drawable/filechooser_list_item_text_selector"
+		android:textColor="@android:color/primary_text_dark"
 		android:textSize="12sp" />
 
 	<TextView
@@ -61,7 +61,7 @@
 		android:gravity="center_vertical"
 		android:maxLines="1"
 		android:singleLine="true"
-		android:textColor="@drawable/filechooser_list_item_text_selector"
+		android:textColor="@android:color/primary_text_dark"
 		android:textSize="12sp" />
 
 </RelativeLayout>
