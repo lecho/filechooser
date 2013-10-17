@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.lecho.filechooser;
+package lecho.lib.filechooser;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -37,7 +37,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,25 +61,22 @@ import android.widget.ViewSwitcher;
 public class FileChooserActivity extends Activity {
 
 	public static final String TAG = FileChooserActivity.class.getSimpleName();
-	public static final String START_PATH = "com.github.lechofilechooser:start-path";
+	public static final String START_PATH = "lecho.lib.lechofilechooser:start-path";
 
 	// If you want to access system folders(for example on rooted device) change
 	// HOME constant;
-	private static final String HOME = Environment.getExternalStorageDirectory().getAbsolutePath();
-	private String mPath;
-	private FileListAdapter mAdapter;
-	private LoaderListener mLoaderListener = new LoaderListener();
-	private TextView mPathText;
-	private ImageButton mBackBtn;
-	private ImageButton mHomeBtn;
-	private ImageButton mCloseBtn;
-	private ViewSwitcher mViewSwitcher;
+	static final String HOME = Environment.getExternalStorageDirectory().getAbsolutePath();
+	String mPath;
+	FileListAdapter mAdapter;
+	LoaderListener mLoaderListener = new LoaderListener();
+	TextView mPathText;
+	ViewSwitcher mViewSwitcher;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.filechooser_activity_file_chooser);
+		setContentView(R.layout.fc_activity_file_chooser);
 		mPath = HOME;
 		if (null != getIntent().getExtras()) {
 			String path = getIntent().getExtras().getString(START_PATH);
@@ -96,19 +92,9 @@ public class FileChooserActivity extends Activity {
 			}
 		}
 
-		mCloseBtn = (ImageButton) findViewById(R.id.close_button);
-		mCloseBtn.setOnClickListener(new CloseListener());
-		mBackBtn = (ImageButton) findViewById(R.id.back_button);
-		mBackBtn.setOnClickListener(new BackListener());
-		mHomeBtn = (ImageButton) findViewById(R.id.home_button);
-		mHomeBtn.setOnClickListener(new HomeListener());
-		if (mPath.equals(HOME)) {
-			mBackBtn.setEnabled(false);
-			mHomeBtn.setEnabled(false);
-		}
-		mViewSwitcher = (ViewSwitcher) findViewById(R.id.view_switcher);
+		mViewSwitcher = (ViewSwitcher) findViewById(R.id.fc_view_switcher);
 
-		mPathText = (TextView) findViewById(R.id.path);
+		mPathText = (TextView) findViewById(R.id.fc_path);
 		mPathText.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -119,7 +105,7 @@ public class FileChooserActivity extends Activity {
 			}
 		});
 
-		ListView list = (ListView) findViewById(R.id.list);
+		ListView list = (ListView) findViewById(R.id.fc_list);
 		mAdapter = new FileListAdapter(getApplicationContext());
 		list.setAdapter(mAdapter);
 		list.setOnItemClickListener(new SelectionListener());
@@ -145,7 +131,7 @@ public class FileChooserActivity extends Activity {
 	/*
 	 * Returns false if user returned to home directory, true otherwise.
 	 */
-	private boolean back() {
+	boolean back() {
 
 		if (mPath.length() > HOME.length()) {
 			int index = mPath.lastIndexOf("/");
@@ -157,7 +143,7 @@ public class FileChooserActivity extends Activity {
 		}
 	}
 
-	private void home() {
+	void home() {
 		mPath = HOME;
 		loadCurrentPath();
 	}
@@ -166,7 +152,7 @@ public class FileChooserActivity extends Activity {
 	 * Loads files under current path. TODO if you want to add FileObserver,
 	 * onEvent method should call this method.
 	 */
-	private void loadCurrentPath() {
+	void loadCurrentPath() {
 		new PathLoader(mLoaderListener).execute(mPath);
 	}
 
@@ -197,14 +183,6 @@ public class FileChooserActivity extends Activity {
 		public void onPathLoaded(List<File> files) {
 			mAdapter.setObjects(files);
 			mPathText.setText(mPath);
-			if (mPath.equals(HOME)) {
-				mBackBtn.setEnabled(false);
-				mHomeBtn.setEnabled(false);
-			} else {
-				mBackBtn.setEnabled(true);
-				mHomeBtn.setEnabled(true);
-			}
-
 			mViewSwitcher.showPrevious();
 		}
 
@@ -232,55 +210,6 @@ public class FileChooserActivity extends Activity {
 				finish();
 			}
 		}
-	}
-
-	/**
-	 * Called when user click up button.
-	 * 
-	 * @author lecho
-	 * 
-	 */
-	private class BackListener implements View.OnClickListener {
-
-		@Override
-		public void onClick(View v) {
-			back();
-
-		}
-
-	}
-
-	/**
-	 * Called when user click home button.
-	 * 
-	 * @author lecho
-	 * 
-	 */
-	private class HomeListener implements View.OnClickListener {
-
-		@Override
-		public void onClick(View v) {
-			home();
-
-		}
-
-	}
-
-	/**
-	 * Called when user click close button.
-	 * 
-	 * @author lecho
-	 * 
-	 */
-	private class CloseListener implements View.OnClickListener {
-
-		@Override
-		public void onClick(View v) {
-			setResult(Activity.RESULT_CANCELED);
-			finish();
-
-		}
-
 	}
 
 	/**

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.github.lecho.filechooser;
+package lecho.lib.filechooser;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -58,12 +58,12 @@ public class FileListAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder;
 		if (null == convertView) {
-			convertView = View.inflate(mContext, R.layout.filechooser_item_file_list, null);
+			convertView = View.inflate(mContext, R.layout.fc_item_file_list, null);
 			viewHolder = new ViewHolder();
-			viewHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
-			viewHolder.name = (TextView) convertView.findViewById(R.id.name);
-			viewHolder.details1 = (TextView) convertView.findViewById(R.id.details1);
-			viewHolder.details2 = (TextView) convertView.findViewById(R.id.details2);
+			viewHolder.icon = (ImageView) convertView.findViewById(R.id.fc_item_icon);
+			viewHolder.name = (TextView) convertView.findViewById(R.id.fc_item_name);
+			viewHolder.details1 = (TextView) convertView.findViewById(R.id.fc_details1);
+			viewHolder.details2 = (TextView) convertView.findViewById(R.id.fc_details2);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();

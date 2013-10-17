@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">filechooser</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="menu_settings">Settings</string>
-    <string name="back_button_description">Step back</string>
-    <string name="home_button_description">Step back</string>
-    <string name="close_button_description">Step back</string>
-    <string name="file_icon_description">Item icon</string>
+    <string name="fc_app_name">filechooser</string>
+    <string name="fc_back_button_description">Step back</string>
+    <string name="fc_home_button_description">Step back</string>
+    <string name="fc_close_button_description">Step back</string>
+    <string name="fc_file_icon_description">Item icon</string>
 
 </resources>
