@@ -3,5 +3,8 @@
 
     <string name="fc_directory">&#60;DIR&#62;&#32;</string>
     <string name="fc_file">&#60;FILE&#62;&#32;</string>
+    <string name="fc_internal_storage">Internal Storage</string>
+    <string name="fc_external_storage">External Storage</string>
+    <string name="fc_read_only">(Read Only)</string>
 
 </resources>

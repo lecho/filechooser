@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PathAdapter extends BaseAdapter {
 	private static final long LENGTH_BYTES_CEIL = 1024;
@@ -99,11 +100,19 @@ public class PathAdapter extends BaseAdapter {
 
 		viewHolder.details2.setText(details2.toString());
 
+		convertView.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				Toast.makeText(mContext, "fjdlksa", Toast.LENGTH_SHORT).show();
+
+			}
+		});
+
 		return convertView;
 	}
 
 	public void setObjects(List<File> objects) {
-		mObjects.clear();
 		mObjects = objects;
 		notifyDataSetChanged();
 	}

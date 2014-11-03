@@ -13,6 +13,8 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
@@ -35,10 +37,13 @@ public class FilechooserActivity extends FragmentActivity {
 
 		private static final int LOADER_ID = 1;
 
-		private PathAdapter mAdapter;
-		private ListView mListView;
-		private ViewSwitcher mViewSwitcher;
-		private TextView mCurrentPath;
+		private File rootDir;
+		private File currentDir;
+
+		private PathAdapter adapter;
+		private ListView listView;
+		private ViewSwitcher viewSwitcher;
+		private TextView currentDirView;
 
 		public FilechooserFragment() {
 		}
@@ -47,11 +52,11 @@ public class FilechooserActivity extends FragmentActivity {
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_filechooser, container, false);
 
-			mCurrentPath = (TextView) rootView.findViewById(R.id.fc_path);
+			currentDirView = (TextView) rootView.findViewById(R.id.fc_path);
 
-			mViewSwitcher = (ViewSwitcher) rootView.findViewById(R.id.fc_view_switcher);
+			viewSwitcher = (ViewSwitcher) rootView.findViewById(R.id.fc_view_switcher);
 
-			mListView = (ListView) rootView.findViewById(R.id.fc_list);
+			listView = (ListView) rootView.findViewById(R.id.fc_list);
 
 			return rootView;
 		}
@@ -60,8 +65,14 @@ public class FilechooserActivity extends FragmentActivity {
 		public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 			super.onActivityCreated(savedInstanceState);
 
-			mAdapter = new PathAdapter(getActivity());
-			mListView.setAdapter(mAdapter);
+			rootDir = new File(Environment.getExternalStorageDirectory().getParent());
+
+			currentDir = new File(Environment.getExternalStorageDirectory().getParent());
+
+			adapter = new PathAdapter(getActivity());
+
+			listView.setAdapter(adapter);
+			// listView.setItemsCanFocus(true);
 
 			getLoaderManager().initLoader(LOADER_ID, null, this);
 
@@ -70,8 +81,8 @@ public class FilechooserActivity extends FragmentActivity {
 		@Override
 		public Loader<List<File>> onCreateLoader(int id, Bundle data) {
 			if (LOADER_ID == id) {
-				mViewSwitcher.setDisplayedChild(1);
-				return new PathLoader(getActivity(), Environment.getExternalStorageDirectory());
+				viewSwitcher.setDisplayedChild(1);
+				return new PathLoader(getActivity(), currentDir);
 			}
 			return null;
 		}
@@ -79,16 +90,16 @@ public class FilechooserActivity extends FragmentActivity {
 		@Override
 		public void onLoadFinished(Loader<List<File>> loader, List<File> data) {
 			if (LOADER_ID == loader.getId()) {
-				mAdapter.setObjects(data);
-				mAdapter.notifyDataSetChanged();
-				mViewSwitcher.setDisplayedChild(0);
+				adapter.setObjects(data);
+				viewSwitcher.setDisplayedChild(0);
 			}
 
 		}
 
 		@Override
 		public void onLoaderReset(Loader<List<File>> arg0) {
-			mViewSwitcher.setDisplayedChild(0);
+			adapter.clear();
+			viewSwitcher.setDisplayedChild(0);
 
 		}
 	}

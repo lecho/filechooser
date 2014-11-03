@@ -1,4 +1,7 @@
 <resources>
 
+    <style name="fcSelectableItemBackground">
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+    </style>
 
 </resources>

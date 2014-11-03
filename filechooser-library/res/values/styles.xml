@@ -1,3 +1,7 @@
 <resources>
 
+    <style name="fcSelectableItemBackground">
+        <item name="android:background">@android:drawable/list_selector_background</item>
+    </style>
+
 </resources>
