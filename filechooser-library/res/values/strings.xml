@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="fc_directory">&#60;DIR&#62;&#32;</string>
+    <string name="fc_file">&#60;FILE&#62;&#32;</string>
+
+</resources>
