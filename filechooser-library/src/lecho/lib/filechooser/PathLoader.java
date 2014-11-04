@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import lecho.lib.filechooser.StorageUtils.StorageInfo;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.FileObserver;
@@ -21,9 +23,12 @@ public class PathLoader extends AsyncTaskLoader<List<File>> {
 
 	private PathObserver pathObserver;
 
-	public PathLoader(Context context, File dir) {
+	private boolean shouldParseMounts;
+
+	public PathLoader(Context context, File dir, boolean shouldParseMounts) {
 		super(context);
 		this.dir = dir;
+		this.shouldParseMounts = shouldParseMounts;
 	}
 
 	@Override
@@ -31,15 +36,26 @@ public class PathLoader extends AsyncTaskLoader<List<File>> {
 
 		List<File> files = new ArrayList<File>();
 
-		File[] filesTab = dir.listFiles();
-		// TODO filters
+		if (shouldParseMounts) {
 
-		if (null != filesTab) {
+			List<StorageInfo> storages = StorageUtils.getStorageList();
 
-			Arrays.sort(filesTab, pathComparator);
+			for (StorageInfo storageInfo : storages) {
+				files.add(new File(storageInfo.path));
+			}
 
-			for (File file : filesTab) {
-				files.add(file);
+		} else {
+
+			File[] filesTab = dir.listFiles();
+			// TODO filters
+
+			if (null != filesTab) {
+
+				Arrays.sort(filesTab, pathComparator);
+
+				for (File file : filesTab) {
+					files.add(file);
+				}
 			}
 		}
 
@@ -142,7 +158,7 @@ public class PathLoader extends AsyncTaskLoader<List<File>> {
 	 * Helper function to take care of releasing resources associated with an actively loaded data set.
 	 */
 	protected void onReleaseResources(List<File> data) {
-		this.data.clear();
+		data.clear();
 	}
 
 	/**
