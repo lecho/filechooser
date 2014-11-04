@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,7 @@ public class FilechooserActivity extends FragmentActivity {
 	 */
 	public static class FilechooserFragment extends Fragment implements LoaderCallbacks<List<File>> {
 		private static final String BACK_PRESSED_BROADCAST_ACTION = "lecho.lib.filechooser:back-pressed-broadcast-action";
+		private static final String BUNDLE_CURRENT_DIR = "lecho.lib.filechooser:bundle-current-dir";
 		private static final int LOADER_ID = 1;
 
 		private File rootDir;
@@ -77,6 +79,12 @@ public class FilechooserActivity extends FragmentActivity {
 		}
 
 		@Override
+		public void onSaveInstanceState(Bundle outState) {
+			super.onSaveInstanceState(outState);
+			outState.putString(BUNDLE_CURRENT_DIR, currentDir.getAbsolutePath());
+		}
+
+		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_filechooser, container, false);
 
@@ -97,7 +105,17 @@ public class FilechooserActivity extends FragmentActivity {
 
 			rootDir = new File(Environment.getExternalStorageDirectory().getParent());
 
-			currentDir = new File(rootDir.getAbsolutePath());
+			if (null == savedInstanceState) {
+				currentDir = new File(rootDir.getAbsolutePath());
+			} else {
+				String currentDirPath = savedInstanceState.getString(BUNDLE_CURRENT_DIR);
+				if (null == currentDirPath) {
+					currentDir = new File(rootDir.getAbsolutePath());
+				} else {
+					currentDir = new File(currentDirPath);
+				}
+			}
+
 			currentDirView.setText(currentDir.getName());
 
 			adapter = new PathAdapter(getActivity(), new ListItemClickListener());
