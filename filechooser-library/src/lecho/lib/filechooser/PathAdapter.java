@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class PathAdapter extends BaseAdapter {
 	private static final long LENGTH_BYTES_CEIL = 1024;
@@ -29,12 +28,17 @@ public class PathAdapter extends BaseAdapter {
 	private DateFormat mTimeFormat;
 	private Context mContext;
 	private List<File> mObjects = new ArrayList<File>();
+	private OnFcListItemClickListener itemClickListener = new DummyOnFcListItemClickListener();
 
-	public PathAdapter(Context context) {
+	public PathAdapter(Context context, OnFcListItemClickListener itemClickListener) {
 		mContext = context;
 		mNumberFormat = NumberFormat.getInstance();
 		mDateFormat = android.text.format.DateFormat.getDateFormat(mContext);
 		mTimeFormat = android.text.format.DateFormat.getTimeFormat(mContext);
+
+		if (null != itemClickListener) {
+			this.itemClickListener = itemClickListener;
+		}
 	}
 
 	@Override
@@ -100,14 +104,7 @@ public class PathAdapter extends BaseAdapter {
 
 		viewHolder.details2.setText(details2.toString());
 
-		convertView.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				Toast.makeText(mContext, "fjdlksa", Toast.LENGTH_SHORT).show();
-
-			}
-		});
+		convertView.setOnClickListener(new OnFcListItemViewClickListener(position));
 
 		return convertView;
 	}
@@ -141,5 +138,33 @@ public class PathAdapter extends BaseAdapter {
 		public TextView name;
 		public TextView details1;
 		public TextView details2;
+	}
+
+	private class OnFcListItemViewClickListener implements View.OnClickListener {
+
+		private int position;
+
+		public OnFcListItemViewClickListener(int position) {
+			this.position = position;
+		}
+
+		@Override
+		public void onClick(View v) {
+			PathAdapter.this.itemClickListener.onItemClick(position);
+		}
+
+	}
+
+	public interface OnFcListItemClickListener {
+		public void onItemClick(int position);
+	}
+
+	private static class DummyOnFcListItemClickListener implements OnFcListItemClickListener {
+
+		@Override
+		public void onItemClick(int position) {
+
+		}
+
 	}
 }

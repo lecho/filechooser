@@ -10,7 +10,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;

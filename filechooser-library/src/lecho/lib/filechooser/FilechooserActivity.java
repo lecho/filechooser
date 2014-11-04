@@ -67,12 +67,23 @@ public class FilechooserActivity extends FragmentActivity {
 
 			rootDir = new File(Environment.getExternalStorageDirectory().getParent());
 
-			currentDir = new File(Environment.getExternalStorageDirectory().getParent());
+			currentDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath());
 
-			adapter = new PathAdapter(getActivity());
+			adapter = new PathAdapter(getActivity(), new PathAdapter.OnFcListItemClickListener() {
+
+				@Override
+				public void onItemClick(int position) {
+					File file = (File)adapter.getItem(position);
+					if (file.isDirectory() && file.canRead()) {
+						currentDir = file.getAbsoluteFile();
+						getLoaderManager().restartLoader(LOADER_ID, null, FilechooserFragment.this);
+					}
+
+				}
+			});
 
 			listView.setAdapter(adapter);
-			// listView.setItemsCanFocus(true);
+			listView.setItemsCanFocus(true);
 
 			getLoaderManager().initLoader(LOADER_ID, null, this);
 
@@ -82,7 +93,7 @@ public class FilechooserActivity extends FragmentActivity {
 		public Loader<List<File>> onCreateLoader(int id, Bundle data) {
 			if (LOADER_ID == id) {
 				viewSwitcher.setDisplayedChild(1);
-				return new PathLoader(getActivity(), currentDir);
+				return new PathLoader(getActivity(), currentDir, false);
 			}
 			return null;
 		}
