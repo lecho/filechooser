@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="lecho.lib.filechooser.FilechooserFragment" >
+    tools:context=".FilechooserActivity" >
 
     <TextView
         android:id="@+id/fc_path"
@@ -34,6 +34,7 @@
         android:id="@+id/fc_view_switcher"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/fc_buttons_bar"
         android:layout_below="@id/fc_separator" >
 
         <ListView
@@ -57,5 +58,55 @@
         android:text="@string/fc_empty_directory"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@id/fc_buttons_bar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true" >
+
+        <View
+            style="@style/fcButtonDividerHorizontalBackground"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="4dip"
+            android:layout_marginRight="4dip"
+            tools:ignore="PxUsage" />
+
+        <View
+            android:id="@+id/fc_divider_vertical"
+            style="@style/fcButtonDividerVerticalBackground"
+            android:layout_width="1px"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="4dip"
+            android:layout_marginTop="4dip"
+            tools:ignore="PxUsage" />
+
+        <Button
+            android:id="@+id/fc_button_cancel"
+            style="@style/fcBorderlessButtonBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@id/fc_divider_vertical"
+            android:text="@android:string/cancel" />
+
+        <Button
+            android:id="@+id/fc_button_confirm"
+            style="@style/fcBorderlessButtonBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/fc_divider_vertical"
+            android:text="@android:string/ok" />
+    </RelativeLayout>
 
 </RelativeLayout>

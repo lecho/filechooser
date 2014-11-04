@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/fcSelectableItemBackground"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:paddingBottom="4dp"
+    android:paddingTop="4dp" >
 
     <TextView
         android:id="@+id/fc_item_name"
@@ -10,8 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="4dp"
-        android:layout_marginTop="4dp"
         android:layout_toLeftOf="@+id/fc_checkbox"
         android:maxLines="1"
         android:singleLine="true"

@@ -4,4 +4,14 @@
         <item name="android:background">@android:drawable/list_selector_background</item>
     </style>
 
+    <style name="fcBorderlessButtonBackground" parent="@android:style/Widget.Button"></style>
+
+    <style name="fcButtonDividerVerticalBackground">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="fcButtonDividerHorizontalBackground">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
 </resources>

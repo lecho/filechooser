@@ -4,4 +4,16 @@
         <item name="android:background">?android:attr/selectableItemBackground</item>
     </style>
 
+    <style name="fcBorderlessButtonBackground">
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+    </style>
+
+    <style name="fcButtonDividerVerticalBackground">
+        <item name="android:background">?android:attr/dividerVertical</item>
+    </style>
+
+    <style name="fcButtonDividerHorizontalBackground">
+        <item name="android:background">?android:attr/dividerHorizontal</item>
+    </style>
+
 </resources>
