@@ -46,4 +46,13 @@
             android:layout_gravity="center" />
     </ViewSwitcher>
 
+    <TextView
+        android:id="@+id/fc_empty_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/fc_empty_directory"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:visibility="gone" />
+
 </RelativeLayout>

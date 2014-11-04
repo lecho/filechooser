@@ -6,5 +6,6 @@
     <string name="fc_internal_storage">Internal Storage</string>
     <string name="fc_external_storage">External Storage</string>
     <string name="fc_read_only">(Read Only)</string>
+    <string name="fc_empty_directory">Empty Directory</string>
 
 </resources>
