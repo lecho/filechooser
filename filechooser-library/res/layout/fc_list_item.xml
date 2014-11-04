@@ -12,7 +12,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginBottom="4dp"
         android:layout_marginTop="4dp"
-        android:layout_toLeftOf="@+id/fc_item_checkbox"
+        android:layout_toLeftOf="@+id/fc_checkbox"
         android:maxLines="1"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -34,14 +34,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/fc_item_checkbox"
+        android:layout_below="@id/fc_checkbox"
         android:gravity="center_vertical"
         android:maxLines="1"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <CheckBox
-        android:id="@id/fc_item_checkbox"
+        android:id="@id/fc_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

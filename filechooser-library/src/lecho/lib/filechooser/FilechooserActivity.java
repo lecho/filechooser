@@ -13,8 +13,6 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
@@ -93,6 +91,7 @@ public class FilechooserActivity extends FragmentActivity {
 		public Loader<List<File>> onCreateLoader(int id, Bundle data) {
 			if (LOADER_ID == id) {
 				viewSwitcher.setDisplayedChild(1);
+				//TODO check if should parse mounts
 				return new PathLoader(getActivity(), currentDir, false);
 			}
 			return null;

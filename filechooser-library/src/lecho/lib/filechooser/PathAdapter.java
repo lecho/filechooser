@@ -9,36 +9,42 @@ import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
 public class PathAdapter extends BaseAdapter {
 	private static final long LENGTH_BYTES_CEIL = 1024;
 	private static final long LENGTH_KBYTES_CEIL = 1024 * 1024;
 	private static final long LENGTH_MBYTES_CEIL = 1024 * 1024 * 1024;
-	private static final long LENGTH_GBYTES_CEIL = 1024 * 1024 * 1024 * 1024;
-	private static final String LENGTH_UNIG_B = " B";
-	private static final String LENGTH_UNIT_KB = " KB";
-	private static final String LENGTH_UNIT_MB = " MB";
-	private static final String LENGTH_UNIT_GB = " GB";
-	private NumberFormat mNumberFormat;
-	private DateFormat mDateFormat;
-	private DateFormat mTimeFormat;
-	private Context mContext;
+	// private static final long LENGTH_GBYTES_CEIL = 1024 * 1024 * 1024 * 1024;
+	private static final String LENGTH_UNIG_B = "B";
+	private static final String LENGTH_UNIT_KB = "KB";
+	private static final String LENGTH_UNIT_MB = "MB";
+	private static final String LENGTH_UNIT_GB = "GB";
+	private NumberFormat numberFormat;
+	private DateFormat dateFormat;
+	private DateFormat timeFormat;
+	private Context context;
 	private List<File> mObjects = new ArrayList<File>();
 	private OnFcListItemClickListener itemClickListener = new DummyOnFcListItemClickListener();
+	private SparseBooleanArray checkedPositions = new SparseBooleanArray();
 
 	public PathAdapter(Context context, OnFcListItemClickListener itemClickListener) {
-		mContext = context;
-		mNumberFormat = NumberFormat.getInstance();
-		mDateFormat = android.text.format.DateFormat.getDateFormat(mContext);
-		mTimeFormat = android.text.format.DateFormat.getTimeFormat(mContext);
+		this.context = context;
+		numberFormat = NumberFormat.getInstance();
+		dateFormat = android.text.format.DateFormat.getDateFormat(context);
+		timeFormat = android.text.format.DateFormat.getTimeFormat(context);
 
 		if (null != itemClickListener) {
 			this.itemClickListener = itemClickListener;
 		}
+
 	}
 
 	@Override
@@ -47,11 +53,12 @@ public class PathAdapter extends BaseAdapter {
 		ViewHolder viewHolder;
 
 		if (null == convertView) {
-			convertView = View.inflate(mContext, R.layout.fc_list_item, null);
+			convertView = View.inflate(context, R.layout.fc_list_item, null);
 			viewHolder = new ViewHolder();
 			viewHolder.name = (TextView) convertView.findViewById(R.id.fc_item_name);
 			viewHolder.details1 = (TextView) convertView.findViewById(R.id.fc_details1);
 			viewHolder.details2 = (TextView) convertView.findViewById(R.id.fc_details2);
+			viewHolder.checkBox = (CheckBox) convertView.findViewById(R.id.fc_checkbox);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -63,35 +70,17 @@ public class PathAdapter extends BaseAdapter {
 
 		if (file.isFile()) {
 			long length = file.length();
-			StringBuilder details1 = new StringBuilder(mContext.getString(R.string.fc_file));
 
-			BigDecimal div;
-			String unit;
+			StringBuilder details1Text = new StringBuilder(context.getString(R.string.fc_file)).append(" ");
 
-			if (length < LENGTH_BYTES_CEIL) {
-				div = new BigDecimal(1);
-				unit = LENGTH_UNIG_B;
+			FileSizeDivider divider = getFileSizeDivider(length);
 
-			} else if (length < LENGTH_KBYTES_CEIL) {
-				div = new BigDecimal(LENGTH_KBYTES_CEIL);
-				unit = LENGTH_UNIT_KB;
+			BigDecimal dividedLength = new BigDecimal(length).divide(divider.div, 2, BigDecimal.ROUND_CEILING);
 
-			} else if (length < LENGTH_MBYTES_CEIL) {
-				div = new BigDecimal(LENGTH_MBYTES_CEIL);
-				unit = LENGTH_UNIT_MB;
+			details1Text.append(numberFormat.format(dividedLength.doubleValue()));
+			details1Text.append(divider.unitText);
 
-			} else {
-				div = new BigDecimal(LENGTH_GBYTES_CEIL);
-				unit = LENGTH_UNIT_GB;
-
-			}
-
-			BigDecimal dividedLength = new BigDecimal(file.length()).divide(div, 0, BigDecimal.ROUND_CEILING);
-
-			details1.append(mNumberFormat.format(dividedLength.longValue()));
-			details1.append(unit);
-
-			viewHolder.details1.setText(details1.toString());
+			viewHolder.details1.setText(details1Text.toString());
 
 		} else {
 			viewHolder.details1.setText(R.string.fc_directory);
@@ -99,10 +88,12 @@ public class PathAdapter extends BaseAdapter {
 
 		// last modification date
 		Date modifiedDate = new Date(file.lastModified());
-		StringBuilder details2 = new StringBuilder().append(mDateFormat.format(modifiedDate)).append(" ")
-				.append(mTimeFormat.format(modifiedDate));
+		StringBuilder details2Text = new StringBuilder().append(dateFormat.format(modifiedDate)).append(" ")
+				.append(timeFormat.format(modifiedDate));
 
-		viewHolder.details2.setText(details2.toString());
+		viewHolder.details2.setText(details2Text.toString());
+
+		viewHolder.checkBox.setOnCheckedChangeListener(new OnFcListItemCheckedChangeListener(position));
 
 		convertView.setOnClickListener(new OnFcListItemViewClickListener(position));
 
@@ -134,10 +125,44 @@ public class PathAdapter extends BaseAdapter {
 		return position;
 	}
 
+	public SparseBooleanArray getCheckedPositions() {
+		return checkedPositions;
+	}
+
+	private FileSizeDivider getFileSizeDivider(long fileLength) {
+
+		FileSizeDivider divider = new FileSizeDivider();
+
+		if (fileLength < LENGTH_BYTES_CEIL) {
+			divider.div = new BigDecimal(1);
+			divider.unitText = LENGTH_UNIG_B;
+
+		} else if (fileLength < LENGTH_KBYTES_CEIL) {
+			divider.div = new BigDecimal(LENGTH_BYTES_CEIL);
+			divider.unitText = LENGTH_UNIT_KB;
+
+		} else if (fileLength < LENGTH_MBYTES_CEIL) {
+			divider.div = new BigDecimal(LENGTH_KBYTES_CEIL);
+			divider.unitText = LENGTH_UNIT_MB;
+
+		} else {
+			divider.div = new BigDecimal(LENGTH_MBYTES_CEIL);
+			divider.unitText = LENGTH_UNIT_GB;
+		}
+
+		return divider;
+	}
+
 	private static class ViewHolder {
 		public TextView name;
 		public TextView details1;
 		public TextView details2;
+		public CheckBox checkBox;
+	}
+
+	private static class FileSizeDivider {
+		public BigDecimal div;
+		public String unitText;
 	}
 
 	private class OnFcListItemViewClickListener implements View.OnClickListener {
@@ -155,8 +180,32 @@ public class PathAdapter extends BaseAdapter {
 
 	}
 
+	private class OnFcListItemCheckedChangeListener implements OnCheckedChangeListener {
+
+		private int position;
+
+		public OnFcListItemCheckedChangeListener(int position) {
+			this.position = position;
+		}
+
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			if (isChecked) {
+				checkedPositions.put(position, isChecked);
+			} else {
+				checkedPositions.delete(position);
+			}
+
+		}
+
+	}
+
 	public interface OnFcListItemClickListener {
 		public void onItemClick(int position);
+	}
+
+	public interface OnFcListItemCheckListener {
+		public void onItemCheck(int position, boolean isChecked);
 	}
 
 	private static class DummyOnFcListItemClickListener implements OnFcListItemClickListener {
@@ -165,6 +214,5 @@ public class PathAdapter extends BaseAdapter {
 		public void onItemClick(int position) {
 
 		}
-
 	}
 }
