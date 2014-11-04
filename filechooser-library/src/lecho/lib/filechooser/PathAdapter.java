@@ -204,10 +204,6 @@ public class PathAdapter extends BaseAdapter {
 		public void onItemClick(int position);
 	}
 
-	public interface OnFcListItemCheckListener {
-		public void onItemCheck(int position, boolean isChecked);
-	}
-
 	private static class DummyOnFcListItemClickListener implements OnFcListItemClickListener {
 
 		@Override

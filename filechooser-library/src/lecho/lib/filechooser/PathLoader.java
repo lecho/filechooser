@@ -7,7 +7,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import lecho.lib.filechooser.StorageUtils.StorageInfo;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.FileObserver;
@@ -158,7 +157,6 @@ public class PathLoader extends AsyncTaskLoader<List<File>> {
 	 * Helper function to take care of releasing resources associated with an actively loaded data set.
 	 */
 	protected void onReleaseResources(List<File> data) {
-		data.clear();
 	}
 
 	/**

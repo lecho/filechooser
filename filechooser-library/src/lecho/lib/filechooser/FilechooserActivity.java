@@ -3,6 +3,8 @@ package lecho.lib.filechooser;
 import java.io.File;
 import java.util.List;
 
+import lecho.lib.filechooser.PathAdapter.OnFcListItemClickListener;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -96,25 +98,21 @@ public class FilechooserActivity extends FragmentActivity {
 			rootDir = new File(Environment.getExternalStorageDirectory().getParent());
 
 			currentDir = new File(rootDir.getAbsolutePath());
+			currentDirView.setText(currentDir.getName());
 
-			adapter = new PathAdapter(getActivity(), new PathAdapter.OnFcListItemClickListener() {
-
-				@Override
-				public void onItemClick(int position) {
-					File file = (File) adapter.getItem(position);
-					if (file.isDirectory() && file.canRead()) {
-						currentDir = file.getAbsoluteFile();
-						getLoaderManager().restartLoader(LOADER_ID, null, FilechooserFragment.this);
-					}
-
-				}
-			});
+			adapter = new PathAdapter(getActivity(), new ListItemClickListener());
 
 			listView.setAdapter(adapter);
 			listView.setItemsCanFocus(true);
 
 			getLoaderManager().initLoader(LOADER_ID, null, this);
 
+		}
+
+		private void loadDirectory(File dir) {
+			currentDir = dir;
+			currentDirView.setText(currentDir.getName());
+			getLoaderManager().restartLoader(LOADER_ID, null, FilechooserFragment.this);
 		}
 
 		public static Intent getBackPressedBroadcastIntent() {
@@ -159,10 +157,24 @@ public class FilechooserActivity extends FragmentActivity {
 				if (currentDir.equals(rootDir)) {
 					getActivity().finish();
 				} else {
-					currentDir = new File(currentDir.getParent());
-					getLoaderManager().restartLoader(LOADER_ID, null, FilechooserFragment.this);
+					loadDirectory(new File(currentDir.getParent()));
 				}
 			}
+		}
+
+		private class ListItemClickListener implements OnFcListItemClickListener {
+
+			@Override
+			public void onItemClick(int position) {
+				File file = (File) adapter.getItem(position);
+
+				if (file.isDirectory() && file.canRead()) {
+
+					loadDirectory(file);
+				}
+
+			}
+
 		}
 	}
 }
