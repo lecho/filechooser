@@ -33,11 +33,13 @@ public class PathAdapter extends BaseAdapter {
 	private List<File> objects = new ArrayList<File>();
 	private OnFcListItemClickListener itemClickListener = new DummyOnFcListItemClickListener();
 	private OnFcListItemLongClickListener itemLongClickListener = new DummyOnFcListItemLongClickListener();
+	private OnFcItemCheckListener itemCheckListener = new DummyOnFcItemCheckListener();
 	private FcCheckboxValidator checkboxValidator = new DummyFcCheckboxValidator();
 	private SparseBooleanArray checkedPositions = new SparseBooleanArray();
 
 	public PathAdapter(Context context, OnFcListItemClickListener itemClickListener,
-			OnFcListItemLongClickListener itemLongClickListener, FcCheckboxValidator checkboxValidator) {
+			OnFcListItemLongClickListener itemLongClickListener, OnFcItemCheckListener itemCheckListener,
+			FcCheckboxValidator checkboxValidator) {
 		this.context = context;
 		numberFormat = NumberFormat.getInstance();
 		dateFormat = android.text.format.DateFormat.getMediumDateFormat(context);
@@ -48,6 +50,10 @@ public class PathAdapter extends BaseAdapter {
 
 		if (null != itemLongClickListener) {
 			this.itemLongClickListener = itemLongClickListener;
+		}
+
+		if (null != this.itemCheckListener) {
+			this.itemCheckListener = itemCheckListener;
 		}
 
 		if (null != checkboxValidator) {
@@ -145,8 +151,11 @@ public class PathAdapter extends BaseAdapter {
 	}
 
 	public void checkPosition(int position, boolean isChecked) {
-		checkedPositions.put(position, isChecked);
-		notifyDataSetChanged();
+		if (isChecked) {
+			checkedPositions.put(position, isChecked);
+		} else {
+			checkedPositions.delete(position);
+		}
 	}
 
 	private FileSizeDivider getFileSizeDivider(long fileLength) {
@@ -231,9 +240,13 @@ public class PathAdapter extends BaseAdapter {
 				checkedPositions.delete(position);
 			}
 
+			itemCheckListener.onItemCheck(position, isChecked);
+
 		}
 
 	}
+
+	// *** Interfaces ***//
 
 	public interface OnFcListItemClickListener {
 		public void onItemClick(int position, File file);
@@ -256,6 +269,18 @@ public class PathAdapter extends BaseAdapter {
 		@Override
 		public boolean onItemLongClick(int position, File file) {
 			return false;
+		}
+	}
+
+	public interface OnFcItemCheckListener {
+		public void onItemCheck(int position, boolean isChecked);
+	}
+
+	private static class DummyOnFcItemCheckListener implements OnFcItemCheckListener {
+
+		@Override
+		public void onItemCheck(int position, boolean isChecked) {
+
 		}
 	}
 

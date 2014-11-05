@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lecho.lib.filechooser.PathAdapter.FcCheckboxValidator;
+import lecho.lib.filechooser.PathAdapter.OnFcItemCheckListener;
 import lecho.lib.filechooser.PathAdapter.OnFcListItemClickListener;
 import lecho.lib.filechooser.PathAdapter.OnFcListItemLongClickListener;
 import android.app.Activity;
@@ -89,6 +90,7 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 
 		buttonConfirm = (Button) rootView.findViewById(R.id.fc_button_confirm);
 		buttonConfirm.setOnClickListener(new ConfirmButtonClickListener());
+		buttonConfirm.setEnabled(false);
 
 		return rootView;
 	}
@@ -112,6 +114,10 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 
 		currentDirView.setText(currentDir.getName());
 
+		OnFcListItemClickListener itemClickListener = new DefaultListItemClickListener();
+
+		OnFcListItemLongClickListener itemLongClickListener = new ItemLongClickListener();
+
 		// Check selection mode
 		SelectionMode tempSelectionMode = (SelectionMode) getActivity().getIntent().getSerializableExtra(
 				FilechooserActivity.SELECTION_MODE);
@@ -119,11 +125,11 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 			this.selectionMode = tempSelectionMode;
 		}
 
-		OnFcListItemClickListener itemClickListener;
+		OnFcItemCheckListener checkListener;
 		if (SelectionMode.MULTIPLE_ITEM.equals(selectionMode)) {
-			itemClickListener = new MultiItemSelectionListener();
+			checkListener = new MultipleItemCheckListener();
 		} else {
-			itemClickListener = new SingleItemSelectionListener();
+			checkListener = new SingleItemCheckListener();
 		}
 
 		// Check item type
@@ -142,10 +148,8 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 			checkboxValidator = new AllItemsVisibleCheckboxValidator();
 		}
 
-		// Long click listener
-		OnFcListItemLongClickListener itemLongClickListener = new ItemLongClickListener();
-
-		adapter = new PathAdapter(getActivity(), itemClickListener, itemLongClickListener, checkboxValidator);
+		adapter = new PathAdapter(getActivity(), itemClickListener, itemLongClickListener, checkListener,
+				checkboxValidator);
 
 		listView.setAdapter(adapter);
 		listView.setItemsCanFocus(true);
@@ -236,9 +240,7 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 		}
 	}
 
-	// *** Item selection listeners ***//
-
-	private abstract class AbstractListItemClickListener implements OnFcListItemClickListener {
+	private class DefaultListItemClickListener implements OnFcListItemClickListener {
 
 		@Override
 		public void onItemClick(int position, File file) {
@@ -260,28 +262,61 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 		}
 
 		protected void onFileClick(int position, File file) {
-			boolean isChecked = adapter.getCheckedPositions().get(position);
-			adapter.checkPosition(position, !isChecked);
-		}
-
-	}
-
-	private class SingleItemSelectionListener extends AbstractListItemClickListener {
-
-		@Override
-		protected void onFileClick(int position, File file) {
-			super.onFileClick(position, file);
-
-			for (int pos = 0; pos < adapter.getCount(); ++pos) {
-				if (pos != position) {
-					adapter.checkPosition(pos, false);
+			if (ItemType.FILE.equals(itemType) || ItemType.ALL.equals(itemType)) {
+				boolean isChecked = adapter.getCheckedPositions().get(position);
+				adapter.checkPosition(position, !isChecked);
+				if (!isChecked && SelectionMode.SINGLE_ITEM.equals(selectionMode)) {
+					// Clear all other checked items
+					for (int pos = 0; pos < adapter.getCount(); ++pos) {
+						if (pos != position) {
+							adapter.checkPosition(pos, false);
+						}
+					}
 				}
+
+				adapter.notifyDataSetChanged();
 			}
 		}
+
 	}
 
-	private class MultiItemSelectionListener extends AbstractListItemClickListener {
+	// *** Item selection listeners ***//
 
+	private class SingleItemCheckListener implements OnFcItemCheckListener {
+
+		@Override
+		public void onItemCheck(int position, boolean isChecked) {
+			if (isChecked) {
+				// Clear all other checked items
+				for (int pos = 0; pos < adapter.getCount(); ++pos) {
+					if (pos != position) {
+						adapter.checkPosition(pos, false);
+					}
+				}
+			}
+
+			adapter.notifyDataSetChanged();
+
+			if (adapter.getCheckedPositions().size() > 0) {
+				buttonConfirm.setEnabled(true);
+			} else {
+				buttonConfirm.setEnabled(false);
+			}
+
+		}
+	}
+
+	private class MultipleItemCheckListener implements OnFcItemCheckListener {
+
+		@Override
+		public void onItemCheck(int position, boolean isChecked) {
+			if (adapter.getCheckedPositions().size() > 0) {
+				buttonConfirm.setEnabled(true);
+			} else {
+				buttonConfirm.setEnabled(false);
+			}
+
+		}
 	}
 
 	// *** Checkbox visibility validators ***//
