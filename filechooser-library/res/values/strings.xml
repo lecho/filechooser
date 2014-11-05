@@ -7,5 +7,7 @@
     <string name="fc_external_storage">External Storage</string>
     <string name="fc_read_only">(Read Only)</string>
     <string name="fc_empty_directory">Empty Directory</string>
+    <string name="fc_cancel">Cancel</string>
+    <string name="fc_confirm">Confirm</string>
 
 </resources>

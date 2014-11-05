@@ -92,7 +92,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@id/fc_divider_vertical"
-            android:text="@android:string/cancel" />
+            android:text="@string/fc_cancel" />
 
         <Button
             android:id="@+id/fc_button_confirm"
@@ -103,7 +103,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@id/fc_divider_vertical"
-            android:text="@android:string/ok" />
+            android:text="@string/fc_confirm" />
     </RelativeLayout>
 
 </RelativeLayout>
