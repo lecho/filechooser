@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
@@ -12,6 +11,7 @@
         android:id="@+id/fc_path"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:background="@drawable/transparent_box_shadow"
         android:ellipsize="end"
         android:gravity="center_horizontal"
@@ -22,12 +22,11 @@
         android:textStyle="bold" />
 
     <View
-        android:id="@+id/fc_separator"
+        android:id="@+id/fc_path_vertical_separator"
+        style="@style/fcButtonDividerHorizontalBackground"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_below="@id/fc_path"
-        android:layout_marginTop="4dp"
-        android:background="@android:color/darker_gray"
         tools:ignore="PxUsage" />
 
     <ViewSwitcher
@@ -35,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/fc_buttons_bar"
-        android:layout_below="@id/fc_separator" >
+        android:layout_below="@id/fc_path_vertical_separator" >
 
         <ListView
             android:id="@+id/fc_list"
@@ -70,8 +69,6 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="4dip"
-            android:layout_marginRight="4dip"
             tools:ignore="PxUsage" />
 
         <View

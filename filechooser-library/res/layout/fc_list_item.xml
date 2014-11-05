@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:layout_marginBottom="8dp"
         android:layout_toLeftOf="@+id/fc_checkbox"
         android:maxLines="1"
         android:singleLine="true"
@@ -21,10 +22,10 @@
         android:id="@+id/fc_details1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/fc_details2"
         android:layout_below="@id/fc_item_name"
-        android:layout_toLeftOf="@id/fc_details2"
+        android:layout_toLeftOf="@+id/fc_details2"
         android:maxLines="1"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -33,9 +34,10 @@
         android:id="@id/fc_details2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/fc_checkbox"
-        android:gravity="center_vertical"
+        android:layout_below="@id/fc_item_name"
+        android:layout_marginRight="8dp"
         android:maxLines="1"
         android:singleLine="true"
         android:textAppearance="?android:attr/textAppearanceSmall" />
@@ -44,6 +46,7 @@
         android:id="@id/fc_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@id/fc_details2"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true" />
 

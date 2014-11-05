@@ -29,7 +29,6 @@ public class PathAdapter extends BaseAdapter {
 	private static final String LENGTH_UNIT_GB = "GB";
 	private NumberFormat numberFormat;
 	private DateFormat dateFormat;
-	private DateFormat timeFormat;
 	private Context context;
 	private List<File> mObjects = new ArrayList<File>();
 	private OnFcListItemClickListener itemClickListener = new DummyOnFcListItemClickListener();
@@ -38,8 +37,7 @@ public class PathAdapter extends BaseAdapter {
 	public PathAdapter(Context context, OnFcListItemClickListener itemClickListener) {
 		this.context = context;
 		numberFormat = NumberFormat.getInstance();
-		dateFormat = android.text.format.DateFormat.getDateFormat(context);
-		timeFormat = android.text.format.DateFormat.getTimeFormat(context);
+		dateFormat = android.text.format.DateFormat.getMediumDateFormat(context);
 
 		if (null != itemClickListener) {
 			this.itemClickListener = itemClickListener;
@@ -88,9 +86,7 @@ public class PathAdapter extends BaseAdapter {
 
 		// last modification date
 		Date modifiedDate = new Date(file.lastModified());
-		StringBuilder details2Text = new StringBuilder().append(dateFormat.format(modifiedDate)).append(" ")
-				.append(timeFormat.format(modifiedDate));
-
+		StringBuilder details2Text = new StringBuilder().append(dateFormat.format(modifiedDate));
 		viewHolder.details2.setText(details2Text.toString());
 
 		viewHolder.checkBox.setOnCheckedChangeListener(new OnFcListItemCheckedChangeListener(position));
