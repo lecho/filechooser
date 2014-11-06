@@ -34,6 +34,8 @@ import android.widget.ViewSwitcher;
 public class FilechooserFragment extends Fragment implements LoaderCallbacks<List<File>> {
 	private static final String BACK_PRESSED_BROADCAST_ACTION = "lecho.lib.filechooser:back-pressed-broadcast-action";
 	private static final String BUNDLE_CURRENT_DIR = "lecho.lib.filechooser:bundle-current-dir";
+	private static final String BUNDLE_CURRENT_SELECTIONS = "lecho.lib.filechooser:bundle-current-selection";
+
 	private static final int LOADER_ID = 1;
 
 	private File rootDir;
@@ -71,6 +73,13 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putString(BUNDLE_CURRENT_DIR, currentDir.getAbsolutePath());
+
+		int size = adapter.getCheckedPositions().size();
+		int[] checkedPositions = new int[size];
+		for (int i = 0; i < size; ++i) {
+			checkedPositions[i] = adapter.getCheckedPositions().keyAt(i);
+		}
+		outState.putIntArray(BUNDLE_CURRENT_SELECTIONS, checkedPositions);
 	}
 
 	@Override
@@ -148,9 +157,21 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 			checkboxValidator = new AllItemsVisibleCheckboxValidator();
 		}
 
+		// Set up adapter
 		adapter = new PathAdapter(getActivity(), itemClickListener, itemLongClickListener, checkListener,
 				checkboxValidator);
 
+		// Restore saved checked positions
+		if (null != savedInstanceState) {
+			int[] checkedPositions = savedInstanceState.getIntArray(BUNDLE_CURRENT_SELECTIONS);
+			if (null != checkedPositions) {
+				for (int position : checkedPositions) {
+					adapter.checkPosition(position, true);
+				}
+			}
+		}
+
+		// Set up list
 		listView.setAdapter(adapter);
 		listView.setItemsCanFocus(true);
 
@@ -162,6 +183,18 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 		currentDir = dir;
 		currentDirView.setText(currentDir.getName());
 		getLoaderManager().restartLoader(LOADER_ID, null, this);
+	}
+
+	private void clearOtherSelectedItems(int positionToSkip) {
+		int size = adapter.getCheckedPositions().size();
+
+		for (int i = 0; i < size; ++i) {
+			int key = adapter.getCheckedPositions().keyAt(i);
+
+			if (key != positionToSkip) {
+				adapter.checkPosition(key, false);
+			}
+		}
 	}
 
 	public static Intent getBackPressedBroadcastIntent() {
@@ -263,15 +296,12 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 
 		protected void onFileClick(int position, File file) {
 			if (ItemType.FILE.equals(itemType) || ItemType.ALL.equals(itemType)) {
-				boolean isChecked = adapter.getCheckedPositions().get(position);
-				adapter.checkPosition(position, !isChecked);
-				if (!isChecked && SelectionMode.SINGLE_ITEM.equals(selectionMode)) {
-					// Clear all other checked items
-					for (int pos = 0; pos < adapter.getCount(); ++pos) {
-						if (pos != position) {
-							adapter.checkPosition(pos, false);
-						}
-					}
+
+				boolean isChecked = !adapter.getCheckedPositions().get(position);
+				adapter.checkPosition(position, isChecked);
+
+				if (isChecked && SelectionMode.SINGLE_ITEM.equals(selectionMode)) {
+					clearOtherSelectedItems(position);
 				}
 
 				adapter.notifyDataSetChanged();
@@ -282,30 +312,6 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 
 	// *** Item selection listeners ***//
 
-	private class SingleItemCheckListener implements OnFcItemCheckListener {
-
-		@Override
-		public void onItemCheck(int position, boolean isChecked) {
-			if (isChecked) {
-				// Clear all other checked items
-				for (int pos = 0; pos < adapter.getCount(); ++pos) {
-					if (pos != position) {
-						adapter.checkPosition(pos, false);
-					}
-				}
-			}
-
-			adapter.notifyDataSetChanged();
-
-			if (adapter.getCheckedPositions().size() > 0) {
-				buttonConfirm.setEnabled(true);
-			} else {
-				buttonConfirm.setEnabled(false);
-			}
-
-		}
-	}
-
 	private class MultipleItemCheckListener implements OnFcItemCheckListener {
 
 		@Override
@@ -315,6 +321,20 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 			} else {
 				buttonConfirm.setEnabled(false);
 			}
+
+		}
+	}
+
+	private class SingleItemCheckListener extends MultipleItemCheckListener {
+
+		@Override
+		public void onItemCheck(int position, boolean isChecked) {
+			if (isChecked && SelectionMode.SINGLE_ITEM.equals(selectionMode)) {
+				clearOtherSelectedItems(position);
+				adapter.notifyDataSetChanged();
+			}
+
+			super.onItemCheck(position, isChecked);
 
 		}
 	}

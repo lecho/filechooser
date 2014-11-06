@@ -169,6 +169,15 @@ public class PathLoader extends AsyncTaskLoader<List<File>> {
 		@SuppressLint("DefaultLocale")
 		@Override
 		public int compare(File lhs, File rhs) {
+			if (lhs.isDirectory() && rhs.isFile()) {
+				return -1;
+			}
+
+			if (lhs.isFile() && rhs.isDirectory()) {
+				return 1;
+			}
+
+			//TODO natural sort
 			return lhs.getName().toLowerCase().compareTo(rhs.getName().toLowerCase());
 		}
 
