@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import lecho.lib.filechooser.FileSizeUtils.FileSizeDivider;
+
 import android.content.Context;
 import android.util.SparseBooleanArray;
 import android.view.View;
@@ -19,14 +21,6 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 
 public class PathAdapter extends BaseAdapter {
-	private static final long LENGTH_BYTES_CEIL = 1024;
-	private static final long LENGTH_KBYTES_CEIL = 1024 * 1024;
-	private static final long LENGTH_MBYTES_CEIL = 1024 * 1024 * 1024;
-	// private static final long LENGTH_GBYTES_CEIL = 1024 * 1024 * 1024 * 1024;
-	private static final String LENGTH_UNIG_B = "B";
-	private static final String LENGTH_UNIT_KB = "KB";
-	private static final String LENGTH_UNIT_MB = "MB";
-	private static final String LENGTH_UNIT_GB = "GB";
 	private NumberFormat numberFormat;
 	private DateFormat dateFormat;
 	private Context context;
@@ -88,7 +82,7 @@ public class PathAdapter extends BaseAdapter {
 
 			StringBuilder details1Text = new StringBuilder(context.getString(R.string.fc_file)).append(" ");
 
-			FileSizeDivider divider = getFileSizeDivider(length);
+			FileSizeDivider divider = FileSizeUtils.getFileSizeDivider(length);
 
 			BigDecimal dividedLength = new BigDecimal(length).divide(divider.div, 2, BigDecimal.ROUND_CEILING);
 
@@ -158,40 +152,11 @@ public class PathAdapter extends BaseAdapter {
 		}
 	}
 
-	private FileSizeDivider getFileSizeDivider(long fileLength) {
-
-		FileSizeDivider divider = new FileSizeDivider();
-
-		if (fileLength < LENGTH_BYTES_CEIL) {
-			divider.div = new BigDecimal(1);
-			divider.unitText = LENGTH_UNIG_B;
-
-		} else if (fileLength < LENGTH_KBYTES_CEIL) {
-			divider.div = new BigDecimal(LENGTH_BYTES_CEIL);
-			divider.unitText = LENGTH_UNIT_KB;
-
-		} else if (fileLength < LENGTH_MBYTES_CEIL) {
-			divider.div = new BigDecimal(LENGTH_KBYTES_CEIL);
-			divider.unitText = LENGTH_UNIT_MB;
-
-		} else {
-			divider.div = new BigDecimal(LENGTH_MBYTES_CEIL);
-			divider.unitText = LENGTH_UNIT_GB;
-		}
-
-		return divider;
-	}
-
 	private static class ViewHolder {
 		public TextView name;
 		public TextView details1;
 		public TextView details2;
 		public CheckBox checkBox;
-	}
-
-	private static class FileSizeDivider {
-		public BigDecimal div;
-		public String unitText;
 	}
 
 	private class OnFcListItemViewClickListener implements View.OnClickListener {

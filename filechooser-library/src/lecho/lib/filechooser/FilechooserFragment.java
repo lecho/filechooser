@@ -125,7 +125,7 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 
 		OnFcListItemClickListener itemClickListener = new DefaultListItemClickListener();
 
-		OnFcListItemLongClickListener itemLongClickListener = new ItemLongClickListener();
+		OnFcListItemLongClickListener itemLongClickListener = new DefaultItemLongClickListener();
 
 		// Check selection mode
 		SelectionMode tempSelectionMode = (SelectionMode) getActivity().getIntent().getSerializableExtra(
@@ -390,12 +390,12 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 	}
 
 	// *** Long item click listeners ***//
-	private class ItemLongClickListener implements OnFcListItemLongClickListener {
+	private class DefaultItemLongClickListener implements OnFcListItemLongClickListener {
 
 		@Override
 		public boolean onItemLongClick(int position, File file) {
-			// TODO start directory/file details dialog fragment
-			return false;
+			FileDetailsDialogFragment.showDialog(getActivity(), file.getAbsolutePath());
+			return true;
 		}
 
 	}
