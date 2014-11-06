@@ -182,17 +182,27 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 	private void loadDirectory(File dir) {
 		currentDir = dir;
 		currentDirView.setText(currentDir.getName());
+		clearAllSelectedItems();
 		getLoaderManager().restartLoader(LOADER_ID, null, this);
+	}
+
+	private void clearAllSelectedItems() {
+		int size = adapter.getCheckedPositions().size();
+
+		for (int i = 0; i < size; ++i) {
+			int position = adapter.getCheckedPositions().keyAt(i);
+			adapter.checkPosition(position, false);
+		}
 	}
 
 	private void clearOtherSelectedItems(int positionToSkip) {
 		int size = adapter.getCheckedPositions().size();
 
 		for (int i = 0; i < size; ++i) {
-			int key = adapter.getCheckedPositions().keyAt(i);
+			int position = adapter.getCheckedPositions().keyAt(i);
 
-			if (key != positionToSkip) {
-				adapter.checkPosition(key, false);
+			if (position != positionToSkip) {
+				adapter.checkPosition(position, false);
 			}
 		}
 	}
@@ -248,7 +258,10 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 
 		@Override
 		public void onClick(View v) {
-			getActivity().setResult(Activity.RESULT_CANCELED);
+			ArrayList<String> paths = new ArrayList<String>(0);
+			Intent data = new Intent();
+			data.putStringArrayListExtra(FilechooserActivity.SELECTED_PATHS, paths);
+			getActivity().setResult(Activity.RESULT_CANCELED, data);
 			getActivity().finish();
 		}
 
