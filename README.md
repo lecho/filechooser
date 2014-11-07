@@ -10,7 +10,7 @@ Demo app requires appcompat v21.
  - use of file observer(reloads when content of current directory change)
  - details file information dialog at long click
 
-![screenshot1](https://raw.github.com/lecho/filechooser/master/screen_1.png)
+![screenshot1](![](/screen1.png)
 
 ### Usage
 
