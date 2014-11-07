@@ -1,6 +1,7 @@
 package lecho.lib.filechooser;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -24,9 +25,12 @@ public class PathLoader extends AsyncTaskLoader<List<File>> {
 
 	private boolean shouldParseMounts;
 
-	public PathLoader(Context context, File dir, boolean shouldParseMounts) {
+	private FileFilter fileFilter;
+
+	public PathLoader(Context context, File dir, FileFilter fileFilter, boolean shouldParseMounts) {
 		super(context);
 		this.dir = dir;
+		this.fileFilter = fileFilter;
 		this.shouldParseMounts = shouldParseMounts;
 	}
 
@@ -45,8 +49,7 @@ public class PathLoader extends AsyncTaskLoader<List<File>> {
 
 		} else {
 
-			File[] filesTab = dir.listFiles();
-			// TODO filters
+			File[] filesTab = dir.listFiles(fileFilter);
 
 			if (null != filesTab) {
 
@@ -177,7 +180,7 @@ public class PathLoader extends AsyncTaskLoader<List<File>> {
 				return 1;
 			}
 
-			//TODO natural sort
+			// TODO natural sort
 			return lhs.getName().toLowerCase().compareTo(rhs.getName().toLowerCase());
 		}
 

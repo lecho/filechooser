@@ -1,6 +1,7 @@
 package lecho.lib.filechooser;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,9 +29,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
-/**
- * A placeholder fragment containing a simple view.
- */
 public class FilechooserFragment extends Fragment implements LoaderCallbacks<List<File>> {
 	private static final String BACK_PRESSED_BROADCAST_ACTION = "lecho.lib.filechooser:back-pressed-broadcast-action";
 	private static final String BUNDLE_CURRENT_DIR = "lecho.lib.filechooser:bundle-current-dir";
@@ -47,6 +45,7 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 	private Button buttonCancel;
 	private Button buttonConfirm;
 
+	private FileFilter fileFilter = new SystemFilesFilter();
 	private ItemType itemType = ItemType.FILE;
 	private SelectionMode selectionMode = SelectionMode.SINGLE_ITEM;
 
@@ -196,7 +195,7 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 		if (LOADER_ID == id) {
 			viewSwitcher.setDisplayedChild(1);
 			boolean shouldParseMounts = rootDir.equals(currentDir);
-			return new PathLoader(getActivity(), currentDir, shouldParseMounts);
+			return new PathLoader(getActivity(), currentDir, fileFilter, shouldParseMounts);
 		}
 		return null;
 	}
@@ -369,6 +368,15 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 		public boolean onItemLongClick(int position, File file) {
 			FileDetailsDialogFragment.showDialog(getActivity(), file.getAbsolutePath());
 			return true;
+		}
+
+	}
+
+	private static class SystemFilesFilter implements FileFilter {
+
+		@Override
+		public boolean accept(File pathname) {
+			return !pathname.getName().startsWith(".");
 		}
 
 	}
