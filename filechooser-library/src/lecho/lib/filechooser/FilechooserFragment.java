@@ -34,9 +34,8 @@ import android.widget.ViewSwitcher;
 public class FilechooserFragment extends Fragment implements LoaderCallbacks<List<File>> {
 	private static final String BACK_PRESSED_BROADCAST_ACTION = "lecho.lib.filechooser:back-pressed-broadcast-action";
 	private static final String BUNDLE_CURRENT_DIR = "lecho.lib.filechooser:bundle-current-dir";
-	private static final String BUNDLE_CURRENT_SELECTIONS = "lecho.lib.filechooser:bundle-current-selection";
 
-	private static final int LOADER_ID = 1;
+	private static final int LOADER_ID = 88;
 
 	private File rootDir;
 	private File currentDir;
@@ -73,13 +72,6 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putString(BUNDLE_CURRENT_DIR, currentDir.getAbsolutePath());
-
-		int size = adapter.getCheckedPositions().size();
-		int[] checkedPositions = new int[size];
-		for (int i = 0; i < size; ++i) {
-			checkedPositions[i] = adapter.getCheckedPositions().keyAt(i);
-		}
-		outState.putIntArray(BUNDLE_CURRENT_SELECTIONS, checkedPositions);
 	}
 
 	@Override
@@ -91,8 +83,8 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 		viewSwitcher = (ViewSwitcher) rootView.findViewById(R.id.fc_view_switcher);
 
 		listView = (ListView) rootView.findViewById(R.id.fc_list);
-
 		listView.setEmptyView(rootView.findViewById(R.id.fc_empty_view));
+		listView.setItemsCanFocus(true);
 
 		buttonCancel = (Button) rootView.findViewById(R.id.fc_button_cancel);
 		buttonCancel.setOnClickListener(new CancelButtonClickListener());
@@ -107,21 +99,6 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 	@Override
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
-		rootDir = new File(Environment.getExternalStorageDirectory().getParent());
-
-		if (null == savedInstanceState) {
-			currentDir = new File(rootDir.getAbsolutePath());
-		} else {
-			String currentDirPath = savedInstanceState.getString(BUNDLE_CURRENT_DIR);
-			if (null == currentDirPath) {
-				currentDir = new File(rootDir.getAbsolutePath());
-			} else {
-				currentDir = new File(currentDirPath);
-			}
-		}
-
-		currentDirView.setText(currentDir.getName());
 
 		OnFcListItemClickListener itemClickListener = new DefaultListItemClickListener();
 
@@ -157,23 +134,28 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 			checkboxValidator = new AllItemsVisibleCheckboxValidator();
 		}
 
+		// Set up root directory
+		rootDir = new File(Environment.getExternalStorageDirectory().getParent());
+
+		// Set up or restore current directory
+		if (null == savedInstanceState) {
+			currentDir = new File(rootDir.getAbsolutePath());
+		} else {
+			String currentDirPath = savedInstanceState.getString(BUNDLE_CURRENT_DIR);
+			if (null == currentDirPath) {
+				currentDir = new File(rootDir.getAbsolutePath());
+			} else {
+				currentDir = new File(currentDirPath);
+			}
+		}
+		currentDirView.setText(currentDir.getName());
+
 		// Set up adapter
 		adapter = new PathAdapter(getActivity(), itemClickListener, itemLongClickListener, checkListener,
 				checkboxValidator);
 
-		// Restore saved checked positions
-		if (null != savedInstanceState) {
-			int[] checkedPositions = savedInstanceState.getIntArray(BUNDLE_CURRENT_SELECTIONS);
-			if (null != checkedPositions) {
-				for (int position : checkedPositions) {
-					adapter.checkPosition(position, true);
-				}
-			}
-		}
-
 		// Set up list
 		listView.setAdapter(adapter);
-		listView.setItemsCanFocus(true);
 
 		getLoaderManager().initLoader(LOADER_ID, null, this);
 
@@ -182,17 +164,9 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 	private void loadDirectory(File dir) {
 		currentDir = dir;
 		currentDirView.setText(currentDir.getName());
-		clearAllSelectedItems();
+		adapter.clearCheckedPositions();
+		buttonConfirm.setEnabled(false);
 		getLoaderManager().restartLoader(LOADER_ID, null, this);
-	}
-
-	private void clearAllSelectedItems() {
-		int size = adapter.getCheckedPositions().size();
-
-		for (int i = 0; i < size; ++i) {
-			int position = adapter.getCheckedPositions().keyAt(i);
-			adapter.checkPosition(position, false);
-		}
 	}
 
 	private void clearOtherSelectedItems(int positionToSkip) {
@@ -358,7 +332,6 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 
 		@Override
 		public boolean isCheckboxVisible(int positon, File file) {
-			// TODO Auto-generated method stub
 			if (file.isFile()) {
 				return true;
 			}

@@ -117,11 +117,13 @@ public class PathAdapter extends BaseAdapter {
 
 	public void setObjects(List<File> objects) {
 		this.objects = objects;
+		checkedPositions.clear();
 		notifyDataSetChanged();
 	}
 
 	public void clear() {
 		objects.clear();
+		checkedPositions.clear();
 		notifyDataSetChanged();
 	}
 
@@ -150,6 +152,10 @@ public class PathAdapter extends BaseAdapter {
 		} else {
 			checkedPositions.delete(position);
 		}
+	}
+
+	public void clearCheckedPositions() {
+		checkedPositions.clear();
 	}
 
 	private static class ViewHolder {
@@ -199,11 +205,7 @@ public class PathAdapter extends BaseAdapter {
 
 		@Override
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-			if (isChecked) {
-				checkedPositions.put(position, isChecked);
-			} else {
-				checkedPositions.delete(position);
-			}
+			checkPosition(position, isChecked);
 
 			itemCheckListener.onItemCheck(position, isChecked);
 
