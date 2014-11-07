@@ -1,30 +1,37 @@
-#Filechooser
+#Filechooser for Android
 
-Simple file chooser android library, works for api 8+. 
-Uses single activity without FileObserver and does not require android support library.
+Simple file chooser android library compatible with API 9+.
+Demo app requires appcompat v21.
+
+###Features
+ - single/multi file selection
+ - single/multi directory selection
+ - single/multi file and directory selection at the same time
+ - use of file observer(reloads when content of current directory change)
+ - details file information dialog at long click
 
 ![screenshot1](https://raw.github.com/lecho/filechooser/master/screen_1.png)
 
-## Usage
-    private static final int REQUEST_CODE = 1;
+### Usage
 
-    public void foo() {
-        Intent intent = new Intent(context, FileChooserActivity.class);
-        startActivityForResult(intent, REQUEST_CODE);
+```java
+//Start FilechooserActivity for result
+public void someMethod(){
+    Intent intent = new Intent(getActivity(), FilechooserActivity.class);
+    intent.putExtra(FilechooserActivity.BUNDLE_ITEM_TYPE, ItemType.FILE);
+    intent.putExtra(FilechooserActivity.BUNDLE_SELECTION_MODE, SelectionMode.SINGLE_ITEM);
+    startActivityForResult(intent, requestCode);
+}
 
+//Handle onActivityResult
+public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (resultCode == Activity.RESULT_OK) {
+        ArrayList<String> paths = data.getStringArrayListExtra(FilechooserActivity.BUNDLE_SELECTED_PATHS);
     }
+}
+```
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-        case REQUEST_CODE:	
-            if (resultCode == Activity.RESULT_OK) {	
-                Uri uri = data.getData();
-            }
-        }
-    }
-
-## License
+# License
 
     Copyright (C) 2012 Leszek Wach
 
