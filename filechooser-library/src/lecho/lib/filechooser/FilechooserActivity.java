@@ -5,9 +5,9 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 
 public class FilechooserActivity extends FragmentActivity {
-	public static final String SELECTED_PATHS = "lecho.lib.filechooser:selected-paths";
-	public static final String ITEM_TYPE = "lecho.lib.filechoser:item-type";
-	public static final String SELECTION_MODE = "lecho.lib.filechooser:selection-mode";
+	public static final String BUNDLE_SELECTED_PATHS = "lecho.lib.filechooser:selected-paths";
+	public static final String BUNDLE_ITEM_TYPE = "lecho.lib.filechoser:item-type";
+	public static final String BUNDLE_SELECTION_MODE = "lecho.lib.filechooser:selection-mode";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

@@ -105,7 +105,7 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 
 		// Check selection mode
 		SelectionMode tempSelectionMode = (SelectionMode) getActivity().getIntent().getSerializableExtra(
-				FilechooserActivity.SELECTION_MODE);
+				FilechooserActivity.BUNDLE_SELECTION_MODE);
 		if (null != tempSelectionMode) {
 			this.selectionMode = tempSelectionMode;
 		}
@@ -118,8 +118,8 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 		}
 
 		// Check item type
-		ItemType tempItemType = (ItemType) getActivity().getIntent()
-				.getSerializableExtra(FilechooserActivity.ITEM_TYPE);
+		ItemType tempItemType = (ItemType) getActivity().getIntent().getSerializableExtra(
+				FilechooserActivity.BUNDLE_ITEM_TYPE);
 		if (null != tempItemType) {
 			this.itemType = tempItemType;
 		}
@@ -220,6 +220,7 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (currentDir.equals(rootDir)) {
+				getActivity().setResult(Activity.RESULT_CANCELED);
 				getActivity().finish();
 			} else {
 				loadDirectory(new File(currentDir.getParent()));
@@ -231,10 +232,7 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 
 		@Override
 		public void onClick(View v) {
-			ArrayList<String> paths = new ArrayList<String>(0);
-			Intent data = new Intent();
-			data.putStringArrayListExtra(FilechooserActivity.SELECTED_PATHS, paths);
-			getActivity().setResult(Activity.RESULT_CANCELED, data);
+			getActivity().setResult(Activity.RESULT_CANCELED);
 			getActivity().finish();
 		}
 
@@ -253,7 +251,7 @@ public class FilechooserFragment extends Fragment implements LoaderCallbacks<Lis
 			}
 
 			Intent data = new Intent();
-			data.putStringArrayListExtra(FilechooserActivity.SELECTED_PATHS, paths);
+			data.putStringArrayListExtra(FilechooserActivity.BUNDLE_SELECTED_PATHS, paths);
 			getActivity().setResult(Activity.RESULT_OK, data);
 			getActivity().finish();
 		}
